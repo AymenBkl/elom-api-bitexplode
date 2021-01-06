@@ -1,5 +1,5 @@
-const errResponse = require('./response.err.user');
-const successResponse = require('./response.success.user');
+const errResponse = require('./response.err.game');
+const successResponse = require('./response.success.game');
 
 module.exports.response = (type,res,msg,status,user) => {
     console.log(type);

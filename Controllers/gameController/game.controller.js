@@ -7,11 +7,12 @@ const createGame = require('./game.create');
 let games = {}
 module.exports = {
     createGame: (req,res) => {
-        createGame.createGame(games,res);
+        createGame.createGame(games,res,req.body.gameHash);
     },
 
     clickCel: (req,res) => {
         const gameId = req.body.gameId;
-        clickCel.clickCel(res,games[gameId],req.body.rowIndex,req.body.colIndex);
+        const gameHash = req.body.gameHash;
+        clickCel.clickCel(res,games[gameHash][gameId],req.body.rowIndex,req.body.colIndex);
     }
 }

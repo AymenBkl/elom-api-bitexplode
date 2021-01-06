@@ -2,14 +2,14 @@
 
 const gameHandler = require('../../handlerGame/response.controller');
 
-module.exports.createGame = async (games) => {
+module.exports.createGame = async (games,res) => {
         const now = new Date().toISOString();
         games[now] = await createMatrix();
-        console.log(games);
+        gameHandler.response("success",res,"YOUR GAME HAS BEEN CREATED",200,games);
 }
 
 async function createMatrix() {
-    let game = await Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => 'default'));
+    let game = await Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => Object.assign({ color: "green", value: 0, clicked: false })));
     return createMine(game,3);
 }
 

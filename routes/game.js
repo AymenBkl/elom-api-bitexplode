@@ -9,6 +9,7 @@ router.all('/', function(req, res, next) {
 .options('/', function(req, res, next) {
     next();
 })
-.post('/',gameController.createGame);
+.post('/creategame',gameController.createGame)
+.post('/clickcel',gameController.clickCel);
 
 module.exports = router;

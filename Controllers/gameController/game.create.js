@@ -8,7 +8,7 @@ module.exports.createGame = async (games, res, gameHash,game) => {
   if (!games[gameHash]) {
     games[gameHash] = {}
   }
-  games[gameHash][now] = initGame(now);
+  games[gameHash][now] = initGame(now,minesNumber =  game.numberMines,true,stake= game.stake);
   games[gameHash][now].matrix = await createMatrix();
   const currentGame = games[gameHash][now];
   gameHandler.response("success", res, "YOUR GAME HAS BEEN CREATED", 200, 
@@ -37,14 +37,13 @@ async function createMine(game, numberMines) {
   return game;
 };
 
-function initGame(gameId, minesNumber = 1, gamePlaying = true, stake = 100, matrix = null) {
+function initGame(gameId, minesNumber = 1, gamePlaying = true, stake = 100) {
   game = {
     gameId: gameId,
     stake: stake,
     numberMines: minesNumber,
     userClick: 0,
     playing: gamePlaying,
-    matrix: null,
     completed: false,
   }
 

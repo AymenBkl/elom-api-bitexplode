@@ -9,11 +9,13 @@ const whiteList = [config.config.webURL];
 
 var corsOptionsDelegate = (req, callback) => {
   var corsOptions;
+  console.log("")
   const index = whiteList.indexOf(req.header("Origin"));  
   if (index !== -1 ) {
     corsOptions = { origin: true };
   } else {
     corsOptions = { origin: false };
+    callback(new Error('Not allowed by CORS'),corsOptions)
   }
   callback(null,corsOptions);
 };

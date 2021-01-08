@@ -1,15 +1,18 @@
 
 module.exports.checkGame = async (res,games,gameHash,gameId) => {
-    console.log(gameHash,gameId);
-    console.log("lol",(gameHash in games));
     if ((gameHash in games) && (gameId in games[gameHash])){
         let game = games[gameHash][gameId];
         const activeIndex = await getGameActiveIndexs(game.matrix);
-        let cloneGame = game;
-        delete cloneGame['matrix'];
         res.json({msg : 'YOU HAVE A GAME',success: true,status : 200,game: 
         {
-            game: cloneGame,
+            game : {
+                gameId: game.gameId,
+                stake: game.stake,
+                numberMines: game.numberMines,
+                userClick: game.userClick,
+                playing: game.playing,
+                completed: game.completed,
+              },
             activeIndex:activeIndex,
         }});
     }

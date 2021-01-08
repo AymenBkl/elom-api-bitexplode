@@ -11,6 +11,7 @@ router.all('/', function(req, res, next) {
     next();
 })
 .post('/creategame',cors.corsWithOptions,gameController.createGame)
-.post('/clickcel',cors.corsWithOptions,gameController.clickCel);
+.post('/clickcel',cors.corsWithOptions,gameController.clickCel)
+.post('/checkgame',cors.corsWithOptions,gameController.checkGame);
 
 module.exports = router;

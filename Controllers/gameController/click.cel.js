@@ -7,17 +7,13 @@ module.exports.clickCel = async (res,game,rowIndex,colIndex) => {
             game.userClick += 1;
             if (cel.color == 'green'){
                 cel.clicked = true;
-                setTimeout(() => {
                     res.json({msg : 'YOU HAVE CLICK RIGHT CELL',success: true,status : 200,response: {userClick: game.userClick, color: 'green'}});
-                },1000);
 
             }
             else {
                 cel.clicked = true;
                 const indexMines = await loseGame();
-                setTimeout(() => {
                     res.json({msg : 'YOU HAVE CLICK MINE CELL',success: true,status : 200,response: {userClick: game.userClick,indexMines: indexMines,color: 'red'}});
-                },1000);
             }
             game.matrix[rowIndex][colIndex] = cel;
         }

@@ -10,7 +10,6 @@ module.exports.createGame = async (games, res, gameHash, game) => {
   games[gameHash][now] = initGame(now, minesNumber = game.numberMines, true, stake = game.stake);
   games[gameHash][now].matrix = await createMatrix(games[gameHash][now].numberMines);
   const currentGame = games[gameHash][now];
-  setTimeout(() => {
     gameHandler.response("success", res, "YOUR GAME HAS BEEN CREATED", 200,
       {
         gameId: currentGame.gameId,
@@ -19,7 +18,6 @@ module.exports.createGame = async (games, res, gameHash, game) => {
         userClick: 0, playing: currentGame.playing,
         completed: currentGame.completed
       });
-  }, 1000)
 
 }
 

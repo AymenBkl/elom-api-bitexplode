@@ -14,6 +14,8 @@ var app = express();
 const cors = require('./Middlewares/cors');
 const httpsRedirect = require('./Middlewares/https.redirect');
 const limiter = require('./Middlewares/ddos.limiter');
+const mongoose = require('./Middlewares/mongoose');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

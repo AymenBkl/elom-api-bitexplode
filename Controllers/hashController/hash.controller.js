@@ -2,6 +2,6 @@
 const checkHash = require('./checkHash')
 module.exports = {
     checkHash : (req,res,next) => {
-        console.log(req.query);
+        checkHash.checkHash(res,req.query.hashId)
     }
 }

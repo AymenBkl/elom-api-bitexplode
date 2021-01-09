@@ -12,6 +12,7 @@ var app = express();
 
 const cors = require('./Middlewares/cors');
 const httpsRedirect = require('./Middlewares/https.redirect');
+const limiter = require('./Middlewares/ddos.limiter');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(httpsRedirect);
 app.use(cors.corsWithOptions);
+app.use(limiter.limiter);
 app.use('/', indexRouter); 
 app.use('/users', usersRouter);
 app.use('/game', gameRouter);

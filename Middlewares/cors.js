@@ -5,12 +5,12 @@ const cors = require("cors");
 
 const config = require('../config');
 
-const whiteList = [config.config.webURL];
+const whiteList = [config.config.webURL,config.config.url,config.config.https];
 
 var corsOptionsDelegate = (req, callback) => {
   var corsOptions;
-  console.log("")
   const index = whiteList.indexOf(req.header("Origin"));  
+  console.log(index);
   if (index !== -1 ) {
     corsOptions = { origin: true };
   } else {

@@ -7,6 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var gameRouter = require('./routes/game');
+var hashRouter = require('./routes/hash');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use(limiter.limiter);
 app.use('/', indexRouter); 
 app.use('/users', usersRouter);
 app.use('/game', gameRouter);
+app.use('/hash', hashRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

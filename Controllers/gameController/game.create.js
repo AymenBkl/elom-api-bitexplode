@@ -31,7 +31,6 @@ async function createMine(game, numberMines) {
   while (i < numberMines) {
     let rowIndex = Math.floor(Math.random() * 5);
     let colIndex = Math.floor(Math.random() * 5);
-    console.log(rowIndex, colIndex)
     if (game[rowIndex][colIndex].color != "red") {
       game[rowIndex][colIndex] = { color: "red", value: 0, clicked: false }
       i += 1;

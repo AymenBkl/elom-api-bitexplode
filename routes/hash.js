@@ -7,11 +7,15 @@ const cors = require('../Middlewares/cors');
 router.all('/', function(req, res, next) {
     next();
 })
+
 .options('/',cors.corsWithOptions, function(req, res, next) {
     next();
 })
-.post('/createhash')
+
+.post('/createhash',cors.corsWithOptions,hashController.createHash)
+
 .get('/checkhash',cors.corsWithOptions,hashController.checkHash)
+
 .get('/games');
 
 module.exports = router;

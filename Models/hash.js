@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const hashUniqueValidator = require('./validators/hashUniqueValidator');
+
 const Schema = mongoose.Schema;
 
 const hashSchema = new Schema({
@@ -17,5 +19,5 @@ const hashSchema = new Schema({
 })
 
 
-
+hashUniqueValidator.validators.hashValidator(hashSchema);
 module.exports = mongoose.model('hash',hashSchema);

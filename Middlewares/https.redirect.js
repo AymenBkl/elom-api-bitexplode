@@ -1,7 +1,6 @@
 const app = require('express')();
 
 module.exports = app.all('*', (req, res, next) => {
-    console.log(req.secure);
     if (req.secure) {
       return next();
     }

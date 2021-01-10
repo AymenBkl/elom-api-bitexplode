@@ -2,23 +2,36 @@
 
 const gameHandler = require('../../handlerGame/response.controller');
 
-module.exports.createGame = async (games, res, gameHash, game) => {
-  const now = new Date().toISOString();
-  if (!games[gameHash]) {
-    games[gameHash] = {}
-  }
-  games[gameHash][now] = initGame(now, minesNumber = game.numberMines, true, stake = game.stake);
-  games[gameHash][now].matrix = await createMatrix(games[gameHash][now].numberMines);
-  const currentGame = games[gameHash][now];
-    gameHandler.response("success", res, "YOUR GAME HAS BEEN CREATED", 200,
-      {
-        gameId: currentGame.gameId,
-        stake: currentGame.stake,
-        numberMines: currentGame.numberMines,
-        userClick: 0, playing: currentGame.playing,
-        completed: currentGame.completed
-      });
+const gameModel = require('../../Models/game');
 
+const hash = require('../../Models/hash');
+
+module.exports.createGame = async (res, hashId,game) => {
+  let gameToCreate = {
+    hash: hashId,
+    stake: game.stake,
+    numberMines: game.numberMines,
+    userClick: 0,
+    playing: true,
+    completed: false,
+  }
+
+  gameToCreate.matrix = await createMatrix(game.numberMines)
+
+  gameModel.create(gameToCreate)
+    .then((gameCreated) => {
+      if (gameCreated) {
+        console.log(gameCreated);
+        insertGameToHash(res,hashId,gameCreated);
+      }
+      else {
+        gameHandler.response("error",res,"YOUR GAME COULDNLT CREATE",404);
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      gameHandler.response("error",res,"SOMETHING WENT WRONG",500);
+    })
 }
 
 async function createMatrix(numberMines) {
@@ -39,16 +52,22 @@ async function createMine(game, numberMines) {
   return game;
 };
 
-function initGame(gameId, minesNumber = 1, gamePlaying = true, stake = 100) {
-  game = {
-    gameId: gameId,
-    stake: stake,
-    numberMines: minesNumber,
-    userClick: 0,
-    playing: gamePlaying,
-    completed: false,
+function insertGameToHash(res,hashId, currentGame) {
+  hash.findByIdAndUpdate(hashId , {
+    $push : {
+      games: currentGame._id
+    }
+  },
+  {
+    new: true,useFindAndModify:true
   }
-
-  return game;
+  )
+  .then(() => {
+    gameHandler.response("success", res, "YOUR GAME HAS BEEN CREATED", 200,currentGame);
+  })
+  .catch((err) => {
+    console.log(err);
+    gameHandler.response("error",res,"SOMETHING WENT WRONG",500);
+  })
 }
 

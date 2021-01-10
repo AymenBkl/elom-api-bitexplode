@@ -28,6 +28,20 @@ const gameSchema = new Schema({
         required:true,
         default: true,
     },
+    matrix : [[{
+        color: {
+            type: String,
+            default: 'green'
+        },
+        value : {
+            type: Number,
+            default: 0,
+        },
+        clicked : {
+            type: Boolean,
+            default: false
+        }
+    }]],
     hash : {
         type: mongoose.Types.ObjectId,
         ref: 'hash' 

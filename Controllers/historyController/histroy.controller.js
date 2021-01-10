@@ -6,6 +6,6 @@ const getHistory = require('./getHistory');
 
 module.exports = {
     getHistory: (req,res) => {
-        getHistory.getHistory(res,req.body.hashId);
+        getHistory.getHistory(res,req.query.hashId);
     },
 }

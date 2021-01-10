@@ -14,7 +14,7 @@ module.exports = {
     clickCel: (req,res) => {
         const gameId = req.body.gameId;
         const gameHash = req.body.gameHash;
-        clickCel.clickCel(res,gameHash,gameId,req.body.rowIndex,req.body.colIndex);
+        clickCel.clickCel(res,gameHash,gameId,req.body.rowIndex,req.body.colIndex,req.body.value);
     },
 
     checkGame : (req,res) => {

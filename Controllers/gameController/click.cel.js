@@ -4,7 +4,8 @@ const gameModel = require('../../Models/game');
 
 const hash = require('../../Models/hash');
 
-module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex) => {
+module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) => {
+    console.log(value);
     gameModel.findOne({hash:gameHash,_id: gameId})
         .then(async (game) => {
             if (game){
@@ -13,6 +14,7 @@ module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex) => {
                     game.userClick += 1;
                     if (cel.color == 'green'){
                         cel.clicked = true;
+                        cel.value = value
                             res.json({msg : 'YOU HAVE CLICK RIGHT CELL',success: true,status : 200,response: {userClick: game.userClick, color: 'green'}});
         
                     }

@@ -1,24 +1,34 @@
+const gameModel = require('../../Models/game');
 
-module.exports.checkGame = async (res,games,gameHash,gameId) => {
-    if ((gameHash in games) && (gameId in games[gameHash])){
-        let game = games[gameHash][gameId];
-        const activeIndex = await getGameActiveIndexs(game.matrix);
-        res.json({msg : 'YOU HAVE A GAME',success: true,status : 200,game: 
-        {
-            game : {
-                gameId: game.gameId,
-                stake: game.stake,
-                numberMines: game.numberMines,
-                userClick: game.userClick,
-                playing: game.playing,
-                completed: game.completed,
-              },
-            activeIndex:activeIndex,
-        }});
-    }
-    else {
-        res.json({msg : 'YOU HAVE NO GAME',success: true,status : 200,game:null});
-    }
+const hash = require('../../Models/hash');
+
+
+module.exports.checkGame = async (res,gameHash,gameId) => {
+    gameModel.findOne({hash:gameHash,_id: gameId})
+        .then(async (game) => {
+            if (game){
+                const activeIndex = await getGameActiveIndexs(game.matrix);
+                res.json({msg : 'YOU HAVE A GAME',success: true,status : 200,game: 
+                {
+                    game : {
+                        _id: game._id,
+                        stake: game.stake,
+                        numberMines: game.numberMines,
+                        userClick: game.userClick,
+                        playing: game.playing,
+                        completed: game.completed,
+                      },
+                    activeIndex:activeIndex,
+                }});
+            }else {
+                res.json({msg : 'YOU HAVE NO GAME',success: true,status : 404,game:null});
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.json({msg : 'SOMETHING WENT WRONG',success: true,status : 500,game:null});
+
+        })
 }
 
 async function getGameActiveIndexs(gameMatrix) {

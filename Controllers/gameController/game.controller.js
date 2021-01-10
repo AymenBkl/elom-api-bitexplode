@@ -20,6 +20,6 @@ module.exports = {
     checkGame : (req,res) => {
         const gameId = req.body.gameId;
         const gameHash = req.body.gameHash;
-        checkGame.checkGame(res,games,gameHash,gameId);
+        checkGame.checkGame(res,gameHash,gameId);
     }
 }

@@ -63,7 +63,14 @@ function insertGameToHash(res,hashId, currentGame) {
   }
   )
   .then(() => {
-    gameHandler.response("success", res, "YOUR GAME HAS BEEN CREATED", 200,currentGame);
+    gameHandler.response("success", res, "YOUR GAME HAS BEEN CREATED", 200,
+      {
+        _id: currentGame._id,
+        stake: currentGame.stake,
+        numberMines: currentGame.numberMines,
+        userClick: 0, playing: currentGame.playing,
+        completed: currentGame.completed
+      });
   })
   .catch((err) => {
     console.log(err);

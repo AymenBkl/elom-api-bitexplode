@@ -21,7 +21,17 @@ var options = {
 };
 
 module.exports = mongoose
-  .connect(config.config.mongoURL,options)
+  .connect(config.config.mongoDB.url,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ssl: true,
+    sslValidate:false,
+    sslCA: ca,
+    sslCert:key,
+    sslKey:key,
+    user:config.config.mongoDB.user,
+    pass: config.config.mongoDB.pwd
+})
   .then((db) => {
     console.log("connected to db");
   })

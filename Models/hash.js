@@ -9,10 +9,12 @@ const hashSchema = new Schema({
         type : String,
         required : true,
         unique: true,
+        index:true
     },
     games : [{
         type : mongoose.Types.ObjectId,
-        ref : "game"
+        ref : "game",
+        index:true
     }]
 },{
     timestamps : true

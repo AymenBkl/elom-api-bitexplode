@@ -47,6 +47,24 @@ const gameSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: 'hash',
         index:true
+    },
+    data: {
+        algorithm : {
+            type : String,
+            required:true
+        },
+        iv: {
+            type : String,
+            required:true
+        },
+        key : {
+            type : String,
+            required:true
+        },
+        encryptedData: {
+            type : String,
+            required:true
+        }
     }
 },{
     timestamps : true

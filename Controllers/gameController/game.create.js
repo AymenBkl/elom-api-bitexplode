@@ -6,6 +6,8 @@ const gameModel = require('../../Models/game');
 
 const hash = require('../../Models/hash');
 
+const encrypt = require('../../Middlewares/encrypte');
+
 module.exports.createGame = async (res, hashId,game) => {
   let gameToCreate = {
     hash: hashId,
@@ -41,16 +43,20 @@ async function createMatrix(numberMines) {
 
 async function createMine(game, numberMines) {
   let i = 0;
+  let indexes = 'Your mines are : '; 
   while (i < numberMines) {
     let rowIndex = Math.floor(Math.random() * 5);
     let colIndex = Math.floor(Math.random() * 5);
     if (game[rowIndex][colIndex].color != "red") {
-      game[rowIndex][colIndex] = { color: "red", value: 0, clicked: false }
+      game[rowIndex][colIndex] = { color: "red", value: 0, clicked: false };
+      indexes += rowIndex.toString() + colIndex.toString() + ' - ';
       i += 1;
     }
   }
+  game.data = await encrypt.encrypt(indexes);
   return game;
 };
+
 
 function insertGameToHash(res,hashId, currentGame) {
   hash.findByIdAndUpdate(hashId , {

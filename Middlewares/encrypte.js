@@ -28,7 +28,7 @@ async function randomAlgo() {
    encrypted = Buffer.concat([encrypted, cipher.final()]); 
     console.log(encrypted.toString('hex').length);
    // Returning iv and encrypted data 
-   return Promise.resolve({algorithm : data.algorithm,iv : data.iv.toString('hex'), key : data.key,encryptedData: encrypted.toString('hex') })
+   return Promise.resolve({algorithm : data.algorithm,iv : data.iv.toString('hex'), key : data.key.toString('hex'),encryptedData: encrypted.toString('hex') })
   } 
 
 

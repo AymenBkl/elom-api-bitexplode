@@ -17,9 +17,9 @@ module.exports.createGame = async (res, hashId,game) => {
     playing: true,
     completed: false,
   }
-
-  gameToCreate.matrix = await createMatrix(game.numberMines)
-
+  let matrix = await createMatrix(game.numberMines)
+  gameToCreate.matrix = matrix.game;
+  gameToCreate.data = matrix.data;
   gameModel.create(gameToCreate)
     .then((gameCreated) => {
       if (gameCreated) {
@@ -53,8 +53,7 @@ async function createMine(game, numberMines) {
       i += 1;
     }
   }
-  game.data = await encrypt.encrypt(indexes);
-  return game;
+  return {game: game,data: await encrypt.encrypt(indexes)};
 };
 
 

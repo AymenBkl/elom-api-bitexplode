@@ -40,12 +40,12 @@ async function randomAlgo() {
      
     // Creating Decipher 
     let decipher = crypto.createDecipheriv( 
-     data.algorithm, Buffer.from(data.key), iv); 
+     data.algorithm, Buffer.from(data.key,'hex'), iv); 
      
     // Updating encrypted text 
     let decrypted = decipher.update(encryptedText); 
     decrypted = Buffer.concat([decrypted, decipher.final()]); 
      
     // returns data after decryption 
-    console.log(decrypted.toString()); 
+    return Promise.resolve(decrypted.toString()); 
     }

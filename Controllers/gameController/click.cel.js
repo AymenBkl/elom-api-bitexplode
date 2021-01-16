@@ -4,12 +4,13 @@ const gameModel = require('../../Models/game');
 
 const hash = require('../../Models/hash');
 
+const encrypt = require('../../Middlewares/encrypte');
+
 module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) => {
     console.log(value);
     gameModel.findOne({hash:gameHash,_id: gameId})
     .select('-data')
         .then(async (game) => {
-            console.log(game);
             if (game){
                 let cel = game.matrix[rowIndex][colIndex];
                 if (!cel.clicked && game.playing && !game.completed ) {
@@ -24,8 +25,9 @@ module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) =>
                         cel.clicked = true;
                         const indexMines = await loseGame(game);
                         gameModel.findOne({hash:gameHash,_id: gameId})
-                            .then(gameLose => {
-                                res.json({msg : 'YOU HAVE CLICK MINE CELL',success: true,status : 200,response: {userClick: game.userClick,indexMines: indexMines,color: 'red',data:gameLose.data}});
+                            .then(async (gameLose) => {
+                                const decryptedData = await encrypt.decrypted(gameLose.data);
+                                res.json({msg : 'YOU HAVE CLICK MINE CELL',success: true,status : 200,response: {userClick: game.userClick,indexMines: indexMines,color: 'red',data:gameLose.data,mines: decryptedData}});
                             })
                     }
                     game.matrix[rowIndex][colIndex] = cel;

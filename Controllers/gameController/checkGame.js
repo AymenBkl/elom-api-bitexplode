@@ -5,9 +5,11 @@ const hash = require('../../Models/hash');
 
 module.exports.checkGame = async (res,gameHash,gameId) => {
     gameModel.findOne({hash:gameHash,_id: gameId})
+        .select('-data.iv -data.key -data.algorithm')
         .then(async (game) => {
             if (game){
                 const activeIndex = await getGameActiveIndexs(game.matrix);
+                console.log(game);
                 res.json({msg : 'YOU HAVE A GAME',success: true,status : 200,game: 
                 {
                     game : {
@@ -17,6 +19,7 @@ module.exports.checkGame = async (res,gameHash,gameId) => {
                         userClick: game.userClick,
                         playing: game.playing,
                         completed: game.completed,
+                        encryptedData: game.data.encryptedData
                       },
                     activeIndex:activeIndex,
                 }});

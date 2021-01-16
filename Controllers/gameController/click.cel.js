@@ -7,7 +7,9 @@ const hash = require('../../Models/hash');
 module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) => {
     console.log(value);
     gameModel.findOne({hash:gameHash,_id: gameId})
+    .select('-data')
         .then(async (game) => {
+            console.log(game);
             if (game){
                 let cel = game.matrix[rowIndex][colIndex];
                 if (!cel.clicked && game.playing && !game.completed ) {
@@ -21,7 +23,10 @@ module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) =>
                     else {
                         cel.clicked = true;
                         const indexMines = await loseGame(game);
-                        res.json({msg : 'YOU HAVE CLICK MINE CELL',success: true,status : 200,response: {userClick: game.userClick,indexMines: indexMines,color: 'red'}});
+                        gameModel.findOne({hash:gameHash,_id: gameId})
+                            .then(gameLose => {
+                                res.json({msg : 'YOU HAVE CLICK MINE CELL',success: true,status : 200,response: {userClick: game.userClick,indexMines: indexMines,color: 'red',data:gameLose.data}});
+                            })
                     }
                     game.matrix[rowIndex][colIndex] = cel;
                     gameModel.updateOne({_id:gameId},game)

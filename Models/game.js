@@ -22,11 +22,13 @@ const gameSchema = new Schema({
         type: Boolean,
         required:true,
         default: true,
+        index:true
     },
     completed : {
         type: Boolean,
         required:true,
         default: true,
+        index:true
     },
     matrix : [[{
         color: {
@@ -45,6 +47,7 @@ const gameSchema = new Schema({
     hash : {
         type: mongoose.Types.ObjectId,
         ref: 'hash',
+        index:true
     },
     data: {
         algorithm : {
@@ -65,9 +68,12 @@ const gameSchema = new Schema({
         }
     }
 },{
+    autoIndex:true,
     timestamps : true
 })
 
-
+gameSchema.index({hash:1,_id:1},{name:'hashGameId'});
+gameSchema.index({completed:1,playing:1},{name:'playingCompletedIndex'});
+gameSchema.index({completed:1,playing:1,_id:1},{name:'playingCompletedIdIndex'});
 
 module.exports = mongoose.model('game',gameSchema);

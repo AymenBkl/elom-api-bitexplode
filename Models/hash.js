@@ -18,6 +18,10 @@ const hashSchema = new Schema({
     timestamps : true
 })
 
+hashSchema.index({hashId:1},{name:'hashIdIndex'});
+hashSchema.index({games:1},{name:'gamesIndex'});
+hashSchema.index({games:1,hashId:1},{name:'gamesIndexHash'});
+
 
 hashUniqueValidator.validators.hashValidator(hashSchema);
 module.exports = mongoose.model('hash',hashSchema);

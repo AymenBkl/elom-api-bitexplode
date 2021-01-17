@@ -27,7 +27,6 @@ const gameSchema = new Schema({
         type: Boolean,
         required:true,
         default: true,
-        index:true,
     },
     matrix : [[{
         color: {
@@ -46,7 +45,6 @@ const gameSchema = new Schema({
     hash : {
         type: mongoose.Types.ObjectId,
         ref: 'hash',
-        index:true
     },
     data: {
         algorithm : {

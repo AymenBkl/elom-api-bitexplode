@@ -17,6 +17,6 @@ module.exports.getHistory = async (res,gameHash) => {
         })
         .catch(err => {
             console.log(err);
-            res.json({msg : 'SOMETHING WENT WRONG',success: true,status : 500});
+            res.json({msg : 'SOMETHING WENT WRONG',success: true,status : 500}); 
         })
 }

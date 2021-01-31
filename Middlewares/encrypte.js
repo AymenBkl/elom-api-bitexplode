@@ -1,15 +1,15 @@
 let crypto = require('crypto');
 
-let algorithms = [{name: 'aes128',keyLen : 16,ivLen: 16},{name: 'aes-128-cbc',keyLen : 16,ivLen: 16},{name: 'aes192',keyLen : 24,ivLen: 16},{name: 'aes256',keyLen : 32,ivLen: 16},{name: 'aes128',keyLen : 16,ivLen: 16}];
+let algorithms = [{name: 'aes128',keyLen : 16,ivLen: 16},{name: 'aes-128-cbc',keyLen : 16,ivLen: 16},{name: 'aes192',keyLen : 24,ivLen: 16},{name: 'aes-192-cbc',keyLen : 24,ivLen: 16},{name: 'aes256',keyLen : 32,ivLen: 16},{name: 'aes-256-cbc',keyLen : 32,ivLen: 16}];
 
-async function randomAlgo() {
-    let x = await Math.floor(Math.random() * 4);
-    console.log(x);
-    const algo = algorithms[x];
-    const iv =  await crypto.randomBytes(algo.ivLen);
-    const key = await crypto.randomBytes(algo.keyLen);
-    return Promise.resolve({algorithm : algo.name,iv : iv , key : key ,encrypted: '' });
-  }
+async function randomAlgo(){
+   let x = Math.floor(Math.random() * 6);
+   console.log(x);
+   const algo = algorithms[x];
+   const iv =  crypto.randomBytes(algo.ivLen);
+   const key = crypto.randomBytes(algo.keyLen);
+   return {algorithm : algo.name,iv : iv , key : key ,encrypted: '' }
+ }
   
   
     

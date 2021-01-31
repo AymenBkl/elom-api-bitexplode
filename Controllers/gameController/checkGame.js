@@ -8,6 +8,7 @@ module.exports.checkGame = async (res,gameHash,gameId) => {
         .select('-data.iv -data.key -data.algorithm')
         .then(async (game) => {
             if (game){
+                console.log(game);
                 const activeIndex = await getGameActiveIndexs(game.matrix);
                 res.json({msg : 'YOU HAVE A GAME',success: true,status : 200,game: 
                 {

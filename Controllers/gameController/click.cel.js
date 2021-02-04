@@ -17,7 +17,18 @@ module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) =>
                     if (cel.color == 'green'){
                         cel.clicked = true;
                         cel.value = value
+                        if ((game.numberMines + game.userClick) == 25){
+                            const indexMines = await winGame(game);
+                            gameModel.findOne({hash:gameHash,_id: gameId})
+                            .then(async (gameWin) => {
+                                const decryptedData = await encrypt.decrypted(gameWin.data);
+                                res.json({msg : 'YOU WON THE GAME',success: true,status : 200,response: {userClick: game.userClick,indexMines: indexMines,color: 'green',data:gameWin.data,mines: decryptedData}});
+                            })                       
+                        }
+                        else {
                             res.json({msg : 'YOU HAVE CLICK RIGHT CELL',success: true,status : 200,response: {userClick: game.userClick, color: 'green'}});
+                        }
+                        
         
                     }
                     else {
@@ -52,6 +63,20 @@ module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) =>
 
 
 async function loseGame(game) {
+    let indexMines = [];
+    game.completed = true;
+    game.playing = false;
+    await game.matrix.map((row,indexRow) => {
+        row.map((col,indexCol) => {
+            if (col.color == 'red'){
+                indexMines.push({indexRow : indexRow, indexCol : indexCol});
+            }
+        })
+    })
+    return indexMines;
+}
+
+async function winGame(game) {
     let indexMines = [];
     game.completed = true;
     game.playing = false;

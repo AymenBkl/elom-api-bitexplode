@@ -22,6 +22,7 @@ async function randomAlgo(){
    let cipher =  
       crypto.createCipheriv(data.algorithm, Buffer.from(data.key), data.iv); 
    // Updating text 
+   console.log(text);
    let encrypted = cipher.update(text); 
     
    // Using concatenation 

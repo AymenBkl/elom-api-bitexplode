@@ -75,7 +75,7 @@ function insertGameToHash(res,hashId, currentGame) {
         numberMines: currentGame.numberMines,
         userClick: 0, playing: currentGame.playing,
         completed: currentGame.completed,
-        encryptedData: currentGame.data.encryptedData
+        data:{encryptedData: currentGame.data.encryptedData}
       });
   })
   .catch((err) => {

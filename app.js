@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var gameRouter = require('./routes/game');
 var hashRouter = require('./routes/hash');
 var historyRouter = require('./routes/history');
+var authRouter = require('./routes/auth');
 var app = express();
 
 const cors = require('./Middlewares/cors');
@@ -38,6 +39,7 @@ app.use('/users', usersRouter);
 app.use('/game', gameRouter);
 app.use('/hash', hashRouter);
 app.use('/history', historyRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

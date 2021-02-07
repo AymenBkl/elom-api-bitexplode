@@ -34,7 +34,7 @@ module.exports = mongoose
 })
   .then((db) => {
     console.log("connected to db");
-  })
+  }) 
   .catch((err) => {
     console.log("ERROR : !!", err);
   });

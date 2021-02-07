@@ -26,6 +26,8 @@ opts.jwtFromRequest = extractJwt.fromAuthHeaderAsBearerToken();
 
 exports.jwtPassport = passport.use(
   new passportJwtStrategy(opts, (jwt_payload, done) => {
+    console.log("jwt:payload", jwt_payload);
+
     hash.findOne({ _id: jwt_payload._id }, (err, hashs) => {
       if (err) {
         return done(err, false);
@@ -39,7 +41,7 @@ exports.jwtPassport = passport.use(
 );
 
 var localStrategy = require("passport-local").Strategy;
-exports.localStrategy = passport.use(new localStrategy({usernameField: 'hashId'},hash.authenticate()));
+exports.localStrategy = passport.use('local',new localStrategy({usernameField: 'hashId'},hash.authenticate()));
 
 passport.serializeUser(hash.serializeUser());
 passport.deserializeUser(hash.deserializeUser());

@@ -11,7 +11,7 @@ const hash = require("../../Models/hash");
 const config = require('../../config').config;
 
 module.exports.getToken = (hash) => {
-
+  console.log(hash);
   return JWT.sign(hash,config.token.secretKey,
     {
     expiresIn: config.token.tokenExperationDate,

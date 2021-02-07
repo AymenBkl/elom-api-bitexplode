@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const hashUniqueValidator = require('./validators/hashUniqueValidator');
 
+const passportLocalMongoose = require('passport-local-mongoose');
+
 const Schema = mongoose.Schema;
 
 const hashSchema = new Schema({
@@ -22,6 +24,7 @@ hashSchema.index({hashId:1},{name:'hashIdIndex'});
 hashSchema.index({games:1},{name:'gamesIndex'});
 hashSchema.index({games:1,hashId:1},{name:'gamesIndexHash'});
 
+hashSchema.plugin(passportLocalMongoose,{ usernameField : 'hashId' });
 
 hashUniqueValidator.validators.hashValidator(hashSchema);
 module.exports = mongoose.model('hash',hashSchema);

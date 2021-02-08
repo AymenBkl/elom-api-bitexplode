@@ -11,6 +11,7 @@ const hashSchema = new Schema({
         type : String,
         required : true,
         unique: true,
+        index : true
     },
     games : [{
         type : mongoose.Types.ObjectId,
@@ -19,7 +20,7 @@ const hashSchema = new Schema({
 },{
     timestamps : true
 })
-hashSchema.plugin(passportLocalMongoose,{ usernameField : 'hashId',passwordField:"password"});
+hashSchema.plugin(passportLocalMongoose,{ usernameField : 'hashId'});
 
 hashSchema.index({hashId:1},{name:'hashIdIndex'});
 hashSchema.index({games:1},{name:'gamesIndex'});

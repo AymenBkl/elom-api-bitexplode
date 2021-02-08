@@ -16,6 +16,5 @@ router.all('/', function(req, res, next) {
 
 .get('/checkhash',cors.corsWithOptions,hashController.checkHash)
 
-.get('/games');
 
 module.exports = router;

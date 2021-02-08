@@ -15,7 +15,7 @@ function createLink() {
 }
 
 function createHash(req,res,number) {
-        if (number == 3){
+        if (number == 1){
             res.json({msg : 'COULDNT CREATE YOUR HASH' ,success: false,status : 500});
         }
         else {
@@ -23,6 +23,7 @@ function createHash(req,res,number) {
             let password = "123456789";
             hashModel.register(hash,password,(err,currentHash) => {
                 if (err){
+                    console.log(err);
                     createHash(req,res,number + 1);
                 }
                 else {

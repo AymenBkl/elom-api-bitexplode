@@ -16,7 +16,11 @@ const hashSchema = new Schema({
     games : [{
         type : mongoose.Types.ObjectId,
         ref : "game",
-    }]
+    }],
+    passwordChange:{
+        type : Boolean,
+        default: false
+    }
 },{
     timestamps : true
 })

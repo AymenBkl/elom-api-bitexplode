@@ -13,6 +13,7 @@ module.exports = {
             }
                 req.logIn(hash, (err) => {
                     if (err) {
+                        console.log('err',err)
                         response.response("error", res, err, 401,null);
                     }
                     console.log(hash);

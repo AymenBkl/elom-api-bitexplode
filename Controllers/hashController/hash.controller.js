@@ -8,6 +8,6 @@ module.exports = {
     },
 
     createHash: (req,res,next) => {
-        createHash.createHash(req,res);
+        createHash.createHash(req,res,next);
     }
 }

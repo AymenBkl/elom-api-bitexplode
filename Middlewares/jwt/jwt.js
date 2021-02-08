@@ -44,7 +44,7 @@ exports.verifyHash = passport.authenticate("jwt", { session: false });
 
 var localStrategy = require("passport-local").Strategy;
 
-exports.localStrategy = passport.use(new localStrategy({usernameField: 'hashId'},hashModel.authenticate()));
+exports.localStrategy = passport.use(new localStrategy({usernameField:'hashId'},hashModel.authenticate()));
 passport.serializeUser(hashModel.serializeUser());
 passport.deserializeUser(hashModel.deserializeUser());
 

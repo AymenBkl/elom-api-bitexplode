@@ -4,9 +4,9 @@ const passport = require("passport");
 const jwt = require('../../Middlewares/jwt/jwt');
 let crypto = require('crypto');
 
-module.exports.createHash = async (req,res) => {
+module.exports.createHash = async (req,res,next) => {
 
-    createHash(req,res,0);
+    createHash(req,res,next,0);
     
 }
 function createLink() {
@@ -14,7 +14,7 @@ function createLink() {
 
 }
 
-function createHash(req,res,number) {
+function createHash(req,res,next,number) {
         if (number == 1){
             res.json({msg : 'COULDNT CREATE YOUR HASH' ,success: false,status : 500});
         }
@@ -27,11 +27,7 @@ function createHash(req,res,number) {
                     createHash(req,res,number + 1);
                 }
                 else {
-                    console.log(currentHash);
-                    passport.authenticate("local")(req,res,() => {
-                        console.log("here");
-                        res.json({msg : 'YOUR HASH CREATED SUCCESSFULY',success: true,status : 200,hash : currentHash,token:jwt.getToken({_id:currentHash._id})});
-                    })
+                    res.json({msg : 'YOUR HASH CREATED SUCCESSFULY',success: true,status : 200,hash : currentHash,token:jwt.getToken({_id:currentHash._id})});
                 }
             })     
         }

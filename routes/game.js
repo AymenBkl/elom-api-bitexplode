@@ -4,14 +4,16 @@ const gameController = require('../Controllers/gameController/game.controller');
 const cors = require('../Middlewares/cors');
 /* GET users listing. */
 
+const jwt = require('../Middlewares/jwt/jwt');
+
 router.all('/', function(req, res, next) {
     next();
 })
-.options('/',cors.corsWithOptions, function(req, res, next) {
+.options('/',cors.corsWithOptions,jwt.verifyHash,function(req, res, next) {
     next();
 })
-.post('/creategame',cors.corsWithOptions,gameController.createGame)
-.post('/clickcel',cors.corsWithOptions,gameController.clickCel)
-.post('/checkgame',cors.corsWithOptions,gameController.checkGame);
+.post('/creategame',cors.corsWithOptions,jwt.verifyHash,gameController.createGame)
+.post('/clickcel',cors.corsWithOptions,jwt.verifyHash,gameController.clickCel)
+.post('/checkgame',cors.corsWithOptions,jwt.verifyHash,gameController.checkGame);
 
 module.exports = router;

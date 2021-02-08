@@ -3,6 +3,7 @@ var router = express.Router();
 const authController = require('../Controllers/AuthController/authController');
 const cors = require('../Middlewares/cors');
 /* GET users listing. */
+const jwt = require('../Middlewares/jwt/jwt');
 
 router.all('/', function(req, res, next) {
     next();
@@ -12,7 +13,7 @@ router.all('/', function(req, res, next) {
 })
 .get('/checkJWT',cors.corsWithOptions,authController.checkJWT)
 
-.post('/securepassword',cors.corsWithOptions,authController.securePassword)
+.post('/securepassword',cors.corsWithOptions,jwt.verifyHash,authController.securePassword)
 
 .post('/login',cors.corsWithOptions,authController.login);
 

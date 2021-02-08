@@ -4,8 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var gameRouter = require('./routes/game');
 var hashRouter = require('./routes/hash');
 var historyRouter = require('./routes/history');
@@ -34,8 +32,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(httpsRedirect);
 app.use(cors.corsWithOptions);
 app.use(limiter.limiter);
-app.use('/', indexRouter); 
-app.use('/users', usersRouter);
 app.use('/game', gameRouter);
 app.use('/hash', hashRouter);
 app.use('/history', historyRouter);

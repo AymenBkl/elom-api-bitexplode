@@ -26,12 +26,12 @@ exports.jwtPassport = passport.use(
   new passportJwtStrategy(opts, (jwt_payload, done) => {
     console.log("jwt:payload", jwt_payload);
 
-    user.findOne({ _id: jwt_payload._id }, (err, users) => {
-        console.log(err,users);
+    hashModel.findOne({ _id: jwt_payload._id }, (err, hashs) => {
+        console.log(err,hashs);
       if (err) {
         return done(err, false);
-      } else if (users) {
-        return done(null, users);
+      } else if (hashs) {
+        return done(null, hashs);
       } else {
         return done(null, false);
       }

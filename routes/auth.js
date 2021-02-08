@@ -12,4 +12,6 @@ router.all('/', function(req, res, next) {
 })
 .get('/checkJWT',cors.corsWithOptions,authController.checkJWT)
 
+.post('/securepassword',cors.corsWithOptions,authController.securePassword);
+
 module.exports = router;

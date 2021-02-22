@@ -67,6 +67,7 @@ function insertGameToHash(res,hashId, currentGame) {
     new: true,useFindAndModify:true
   }
   )
+  .select("-hash -salt")
   .then(() => {
     gameHandler.response("success", res, "YOUR GAME HAS BEEN CREATED", 200,
       {

@@ -4,6 +4,7 @@ var game = require('../../Models/game');
 
 module.exports.checkHash = async (res,hashId) => {
     hash.findOne({hashId : hashId})
+    .select("-hash -salt")
     .then(currentHash => {
         if (currentHash) {
             res.json({msg : 'YOUR CURRENT HASH',success: true,status : 200,hash : currentHash });

@@ -16,7 +16,9 @@ module.exports = {
                         console.log('err',err)
                         response.response("error", res, err, 401,null);
                     }
-                    console.log(hash);
+                    hash = hash.toObject();
+                    delete hash.hash;
+                    delete hash.salt;
                     const token = jwt.getToken({ _id: hash._id });
                     response.response("success", res, token, 200,hash);
                 })

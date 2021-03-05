@@ -13,7 +13,7 @@ router.all('/', function(req, res, next) {
     next();
 })
 
-.post('/createhash',cors.corsWithOptions,jwt.verifyHash,hashController.createHash)
+.post('/createhash',cors.corsWithOptions,hashController.createHash)
 
 .get('/checkhash',cors.corsWithOptions,hashController.checkHash)
 

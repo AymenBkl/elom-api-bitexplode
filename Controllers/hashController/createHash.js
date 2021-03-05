@@ -10,7 +10,7 @@ module.exports.createHash = async (req,res,next) => {
     
 }
 function createLink() {
-    return crypto.randomBytes(128).toString('hex');
+    return crypto.randomBytes(64).toString('hex');
 
 }
 

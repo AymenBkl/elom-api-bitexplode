@@ -21,7 +21,7 @@ const hashSchema = new Schema({
         type : Boolean,
         default: false
     },
-    adddress : {
+    address : {
         type : mongoose.Types.ObjectId,
         ref : "bitcoinaddress"
     }

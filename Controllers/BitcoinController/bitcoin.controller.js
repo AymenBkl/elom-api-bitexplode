@@ -11,7 +11,7 @@ module.exports = {
     },
 
     getNewAddress: (req,res,next) => {
-        getNewAddress(req.body.hashId);
+        getNewAddress(res,req.body.hashId);
     },  
 
     getPrivateKey: (req, res, next) => {

@@ -6,6 +6,7 @@ const address = require('../../Models/bitcoin-addresses');
 
 module.exports.getNewAddress = (hashId) => {
     hash.findOne({hashId: hashId})
+    .populate({path : "address"})
         .then((hash) => {
             console.log('hash');
             if (hash && hash.address != null){

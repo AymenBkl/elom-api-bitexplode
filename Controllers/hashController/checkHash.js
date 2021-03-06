@@ -4,6 +4,7 @@ var game = require('../../Models/game');
 
 module.exports.checkHash = async (res,hashId) => {
     hash.findOne({hashId : hashId})
+    .populate({path : "address"})
     .select("-hash -salt")
     .then(currentHash => {
         if (currentHash) {

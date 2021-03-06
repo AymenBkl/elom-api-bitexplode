@@ -7,7 +7,7 @@ const hash = require('../../Models/hash');
 module.exports.getHistory = async (res,gameHash) => {
     hash.findOne({hashId: gameHash})
     .select("-hash -salt")
-    .populate({path : "games",match: {completed: true,playing:false}})
+    .populate([{path : "games",match: {completed: true,playing:false}},{path : "address"}])
         .then(hash => {
             if (hash) {
                 res.json({msg : 'YOUR HASH',success: true,status : 200,hash: hash});

@@ -1,46 +1,52 @@
 const express = require("express");
 var router = express.Router();
 
+const cors = require('../Middlewares/cors');
+
+const jwt = require('../Middlewares/jwt/jwt');
+
 const bitcoinController = require('../Controllers/BitcoinController/bitcoin.controller');
-router.get("/getblockcount",bitcoinController.normalResponse);
 
-router.get("/getbestblockhash",bitcoinController.normalResponse);
 
-router.get("/getconnectioncount",bitcoinController.normalResponse);
+router.get("/getblockcount",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/getdifficulty",bitcoinController.normalResponse);
+router.get("/getbestblockhash",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/getblockchaininfo",bitcoinController.normalResponse);
+router.get("/getconnectioncount",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/getmininginfo",bitcoinController.normalResponse);
+router.get("/getdifficulty",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/getaccountaddress",bitcoinController.normalResponse);
+router.get("/getblockchaininfo",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/getpeerinfo",bitcoinController.normalResponse);
+router.get("/getmininginfo",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/getrawmempool",bitcoinController.normalResponse);
+router.get("/getaccountaddress",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/getnewaddress",bitcoinController.getNewAddress);
+router.get("/getpeerinfo",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/walletlock",bitcoinController.normalResponse);
+router.get("/getrawmempool",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/getbalance",bitcoinController.normalResponse);
+router.get("/getnewaddress",cors.corsWithOptions,jwt.verifyHash,bitcoinController.getNewAddress);
 
-router.post("/sendtoaddress",bitcoinController.sendToAddress);
+router.get("/walletlock",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.post("/listunspent",bitcoinController.listUnSpent);
+router.get("/getbalance",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/walletpassphrase",bitcoinController.unlockWallet);
+router.post("/sendtoaddress",cors.corsWithOptions,jwt.verifyHash,bitcoinController.sendToAddress);
 
-router.get("/dumpprivkey/:address",bitcoinController.getPrivateKey);
+router.post("/listunspent",cors.corsWithOptions,jwt.verifyHash,bitcoinController.listUnSpent);
 
-router.get("/getblock/:hash", bitcoinController.getBlockInfo);
+router.get("/walletpassphrase",cors.corsWithOptions,jwt.verifyHash,bitcoinController.unlockWallet);
 
-router.get("/getblockhash/:index",bitcoinController.getBlockHash);
+router.get("/dumpprivkey/:address",cors.corsWithOptions,jwt.verifyHash,bitcoinController.getPrivateKey);
 
-router.get("/getrawtransaction/:id",bitcoinController.getRawTransaction);
+router.get("/getblock/:hash",cors.corsWithOptions,jwt.verifyHash,bitcoinController.getBlockInfo);
 
-router.get("/decoderawtransaction/:hex",bitcoinController.decodeRawTransaction);
+router.get("/getblockhash/:index",cors.corsWithOptions,jwt.verifyHash,bitcoinController.getBlockHash);
+
+router.get("/getrawtransaction/:id",cors.corsWithOptions,jwt.verifyHash,bitcoinController.getRawTransaction);
+
+router.get("/decoderawtransaction/:hex",cors.corsWithOptions,jwt.verifyHash,bitcoinController.decodeRawTransaction);
 
 
 

@@ -126,21 +126,7 @@ router.get("/decoderawtransaction/:hex", (req, res) => {
   response(res,req.url.split('/')[1],dataString);
 });
 
-function prepareRequest(dataString,callback){
-  console.log(dataString);
-  var options = {
-    url: `http://167.99.213.37:80/wallet/bitexplodetest3`,
-    method: "POST",
-    headers: headers,
-    auth:{
-      user:USER,
-      pass:PASS,
-      sendImmediately:false
-    },
-    body: dataString
-  };
-  request(options, callback);
-}
+
 
 function getInfo(url,dataString){
   return new Promise((resolve,reject) => {
@@ -161,13 +147,7 @@ function getInfo(url,dataString){
 }
 
 function response(res,url,dataString) {
-  getInfo(url,dataString)
-    .then(result => {
-      res.json(result)
-    })
-    .catch(err => {
-      res.json(err);
-    })
+  
 }
 
 function confirmAddress(res,numberBlocks,address){

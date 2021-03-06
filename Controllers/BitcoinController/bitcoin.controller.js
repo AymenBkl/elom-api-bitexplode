@@ -50,5 +50,14 @@ module.exports = {
             .catch(err => {
                 res.json({ err: "Something Went Wrong", method: url, status: response.statusCode, message: err })
             });
+    },
+    listUnSpent: (req, res, next) => {
+        let addresses = [];
+        req.body.addresses.map(address => {
+            addresses.push('"' + address + '"');
+        })
+        const url = req.url.split('/')[1];
+        var dataString = `{"jsonrpc":"1.0","id":"curltext","method":"${url}","params":[${req.body.minconf},${req.body.maxconf},[${addresses}]]}`;
+        response.response(res, url, dataString);
     }
 }

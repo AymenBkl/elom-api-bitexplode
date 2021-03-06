@@ -29,19 +29,9 @@ router.get("/walletlock",bitcoinController.normalResponse);
 
 router.get("/getbalance",bitcoinController.normalResponse);
 
-router.post("/sendtoaddress", (req, res) => {
-  
-});
+router.post("/sendtoaddress",bitcoinController.sendToAddress);
 
-router.post("/listunspent", (req, res) => {
-  let addresses = [];
-  req.body.addresses.map(address => {
-    addresses.push('"' + address + '"');
-  })
-  const url = req.url.split('/')[1];
-  var dataString = `{"jsonrpc":"1.0","id":"curltext","method":"${url}","params":[${req.body.minconf},${req.body.maxconf},[${addresses}]]}`;
-  response(res,url,dataString);
-});
+router.post("/listunspent",bitcoinController.listUnSpent);
 
 router.get("/walletpassphrase",bitcoinController.unlockWallet);
 

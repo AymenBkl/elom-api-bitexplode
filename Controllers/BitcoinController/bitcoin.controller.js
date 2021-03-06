@@ -3,11 +3,16 @@ const response = require('./response');
 
 const confirmAddress = require('./confirmAddress');
 
+const getNewAddress = require('./getNewAddress').getNewAddress;
 module.exports = {
     normalResponse: (req, res, next) => {
         var dataString = `{"jsonrpc":"1.0","id":"curltext","method":"${req.url.split('/')[1]}","params":[]}`;
         response.response(res, req.url.split('/')[1], dataString);
     },
+
+    getNewAddress: (req,res,next) => {
+        getNewAddress(req.body.hashId);
+    },  
 
     getPrivateKey: (req, res, next) => {
         var dataString = `{"jsonrpc":"1.0","id":"curltext","method":"${req.url.split('/')[1]}","params":["${req.params.address}"]}`;

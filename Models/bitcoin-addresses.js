@@ -17,7 +17,7 @@ const addressSchema = new Schema({
     timestamps : true
 })
 
-gameSchema.index({hash:1,_id:1},{name:'hashBitcoin'});
-gameSchema.index({address:1},{name:'addressIndex'});
+addressSchema.index({hash:1,_id:1},{name:'hashBitcoin'});
+addressSchema.index({address:1},{name:'addressIndex'});
 
 module.exports = mongoose.model('bitcoinaddress',addressSchema);

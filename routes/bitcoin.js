@@ -12,10 +12,7 @@ router.get("/getdifficulty",bitcoinController.normalResponse);
 
 router.get("/getblockchaininfo",bitcoinController.normalResponse);
 
-router.get("/getmininginfo", (req, res) => {
-  var dataString = `{"jsonrpc":"1.0","id":"curltext","method":"${req.url.split('/')[1]}","params":[]}`;
-  response(res,req.url.split('/')[1],dataString);
-});
+router.get("/getmininginfo",bitcoinController.normalResponse);
 
 router.get("/getaccountaddress",bitcoinController.normalResponse);
 
@@ -23,7 +20,7 @@ router.get("/getpeerinfo",bitcoinController.normalResponse);
 
 router.get("/getrawmempool",bitcoinController.normalResponse);
 
-router.get("/getnewaddress",bitcoinController.normalResponse);
+router.get("/getnewaddress",bitcoinController.getNewAddress);
 
 router.get("/walletlock",bitcoinController.normalResponse);
 

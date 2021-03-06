@@ -20,6 +20,10 @@ const hashSchema = new Schema({
     passwordChange:{
         type : Boolean,
         default: false
+    },
+    adddress : {
+        type : mongoose.Types.ObjectId,
+        ref : "bitcoinaddress"
     }
 },{
     timestamps : true

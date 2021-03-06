@@ -26,7 +26,7 @@ router.get("/getpeerinfo",cors.corsWithOptions,jwt.verifyHash,bitcoinController.
 
 router.get("/getrawmempool",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 
-router.get("/getnewaddress",cors.corsWithOptions,jwt.verifyHash,bitcoinController.getNewAddress);
+router.post("/getnewaddress",cors.corsWithOptions,jwt.verifyHash,bitcoinController.getNewAddress);
 
 router.get("/walletlock",cors.corsWithOptions,jwt.verifyHash,bitcoinController.normalResponse);
 

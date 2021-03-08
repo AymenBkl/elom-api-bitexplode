@@ -25,7 +25,7 @@ const depositSchema = new Schema({
     timestamps : true
 })
 
-addressSchema.index({hash:1,_id:1},{name:'hashBitcoin'});
-addressSchema.index({address:1},{name:'addressIndex'});
+depositSchema.index({address:1,_id:1},{name:'depositBitcoin'});
+depositSchema.index({address:1},{name:'depositAddressIndex'});
 
-module.exports = mongoose.model('bitcoinaddress',addressSchema);
+module.exports = mongoose.model('depositschema',addressSchema);

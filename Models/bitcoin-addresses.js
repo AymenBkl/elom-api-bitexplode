@@ -11,7 +11,11 @@ const addressSchema = new Schema({
     hashId:{
         type : mongoose.Types.ObjectId,
         ref : "hash"
-    }
+    },
+    deposits: [{
+        type : mongoose.Types.ObjectId,
+        ref : "depositschema"
+    }]
 },{
     autoIndex:true,
     timestamps : true

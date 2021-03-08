@@ -11,7 +11,6 @@ module.exports.getInfo = (url,dataString) => {
           if (!error && response.statusCode == 200) {
             console.log('here2')
             const data = JSON.parse(body);
-            console.log(data.result);
             resolve({data:data});
           }
         };

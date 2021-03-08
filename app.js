@@ -15,14 +15,13 @@ const cors = require('./Middlewares/cors');
 const httpsRedirect = require('./Middlewares/https.redirect');
 const limiter = require('./Middlewares/ddos.limiter');
 const mongoose = require('./Middlewares/mongoose');
-
+const fetchDepositApi = require('./Middlewares/fetch.deposit');
 var passport = require('passport');
 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -43,6 +42,8 @@ app.use('/bitcoin',bitcoin);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
 
 // error handler
 app.use(function(err, req, res, next) {

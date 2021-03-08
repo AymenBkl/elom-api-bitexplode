@@ -1,9 +1,17 @@
+const express = require("express");
+
+var app = express();
+
 const address = require('../Models/bitcoin-addresses');
 
 const listUnspent = require('../Controllers/BitcoinController/listunspent').listUnspent;
 
 
-module.exports.fetchDeposit = () => {
+
+console.log("voila")
+
+var depositApi = () => {
+    console.log('here')
     address.find({})
         .then(addresses => {
             console.log(addresses);
@@ -15,3 +23,6 @@ module.exports.fetchDeposit = () => {
             }
         })
 }
+
+depositApi();
+

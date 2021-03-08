@@ -16,7 +16,6 @@ var depositApi = () => {
                     .then(async (result) => {
                         if (result && result.data && result.data.result.length > 0) {
                             insertNewDeposits(await proccessListUnspent(result.data.result));
-                            console.log("finished");
                         }
                     })
             }
@@ -26,7 +25,6 @@ var depositApi = () => {
 
 async function proccessListUnspent(listUnspent) {
     let addressDeposits = {}
-    console.log(listUnspent);
     await Promise.all(listUnspent.map(unspent => {
         if (addressDeposits[unspent.address]) {
             addressDeposits[unspent.address].push(constructDepost(unspent));
@@ -39,7 +37,7 @@ async function proccessListUnspent(listUnspent) {
 }
 
 function constructDepost(unspent) {
-    return {
+    return { 
         txid: unspent.txid,
         address: unspent.address,
         amount: unspent.amount,
@@ -48,9 +46,9 @@ function constructDepost(unspent) {
 }
 
 function insertNewDeposits(addressDeposits) {
-    Object.values(addressDeposits).map((addressDeposit) =>
+    for(let key in addressDeposits){
         deposit.bulkWrite(
-            addressDeposit.map((deposit) =>
+            addressDeposits[key].map((deposit) =>
             ({
                 updateOne: {
                     filter: { txid: deposit.txid },
@@ -68,21 +66,41 @@ function insertNewDeposits(addressDeposits) {
             })
             )
         )
-            .then(deposit => {
-                if (deposit) {
-                    console.log(deposit)
+            .then(deposit => { 
+                if (deposit && deposit.upsertedIds) {
+                    console.log(deposit.upsertedIds)
+                    addDepositToAddress(key,Object.values(deposit.upsertedIds))
                 }
                 else {
-                    console.log("error");
+                    console.log("error"); 
                 }
             })
             .catch(err => {
                 console.log(err);
             })
-    )
-
+    }
 }
 
+function addDepositToAddress(addressId,depositId) {
+    if (depositId.length > 0) {
+        address.findOneAndUpdate(addressId , {
+            $push : {
+                deposits: depositId
+            }
+          },
+          {
+            new: true,useFindAndModify:true
+          }
+          )
+          .then(() => {
+            console.log("success");  
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+    }
+    
+}
 
 depositApi();
 setInterval(() => {

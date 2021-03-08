@@ -11,7 +11,6 @@ const listUnspent = require('../Controllers/BitcoinController/listunspent').list
 console.log("voila")
 
 var depositApi = () => {
-    console.log('here')
     address.find({})
         .then(addresses => {
             console.log(addresses);
@@ -23,6 +22,8 @@ var depositApi = () => {
             }
         })
 }
-
-depositApi();
+depositApi()
+setInterval(() => {
+    depositApi()}
+    ,300000);
 

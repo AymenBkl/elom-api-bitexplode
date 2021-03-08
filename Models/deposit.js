@@ -32,4 +32,4 @@ depositSchema.index({address:1},{name:'depositAddressIndex'});
 
 txidUniqueValidator.validators.txidValidator(depositSchema);
 
-module.exports = mongoose.model('depositschema',depositSchema);
+module.exports = mongoose.model('depositschema',depositSchema);  

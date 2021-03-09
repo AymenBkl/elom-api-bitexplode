@@ -51,7 +51,6 @@ function constructDepost(unspent) {
 
 function insertNewDeposits(addressDeposits) {
     for(let key in addressDeposits){ 
-        console.log(key)
         deposit.bulkWrite(
             addressDeposits[key].map((deposit) => 
             ({
@@ -86,8 +85,9 @@ function insertNewDeposits(addressDeposits) {
 }
 
 function addDepositToAddress(addressId,depositId) {
-    if (depositId.length > 0) {
-        address.findOneAndUpdate(addressId , {
+    console.log('id',addressId,depositId);
+    if (depositId.length > 0) {   
+        address.findByIdAndUpdate(addressId , {
             $push : {
                 deposits: depositId
             }

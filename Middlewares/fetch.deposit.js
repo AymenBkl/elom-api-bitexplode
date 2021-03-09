@@ -10,12 +10,11 @@ const deposit = require('../Models/deposit');
 var depositApi = () => {
     address.find({})
         .then(addresses => {
-            console.log(addresses);
             if (addresses && address.length > 0) {
                 listUnspent(addresses)
                     .then(async (result) => {
                         if (result && result.data && result.data.result.length > 0) {
-                            insertNewDeposits(await proccessListUnspent(result.data.result));
+                            insertNewDeposits(await proccessListUnspent(result.data.result,addresses));
                         }
                     })
             }
@@ -23,17 +22,22 @@ var depositApi = () => {
 }
 
 
-async function proccessListUnspent(listUnspent) {
+async function proccessListUnspent(listUnspent,addresses) {
     let addressDeposits = {}
     await Promise.all(listUnspent.map(unspent => {
-        if (addressDeposits[unspent.address]) {
-            addressDeposits[unspent.address].push(constructDepost(unspent));
+        const addressId = findAddressId(addresses,unspent.address)
+        if (addressDeposits[addressId]) {
+            addressDeposits[addressId].push(constructDepost(unspent));
         }
         else {
-            addressDeposits[unspent.address] = [constructDepost(unspent)];
+            addressDeposits[addressId] = [constructDepost(unspent)];
         }
     }))
     return addressDeposits;
+}
+
+function findAddressId(addresses,addressUnspent){
+    return addresses.filter((address) => address.address == addressUnspent)[0]._id;
 }
 
 function constructDepost(unspent) {
@@ -46,9 +50,10 @@ function constructDepost(unspent) {
 }
 
 function insertNewDeposits(addressDeposits) {
-    for(let key in addressDeposits){
+    for(let key in addressDeposits){ 
+        console.log(key)
         deposit.bulkWrite(
-            addressDeposits[key].map((deposit) =>
+            addressDeposits[key].map((deposit) => 
             ({
                 updateOne: {
                     filter: { txid: deposit.txid },
@@ -56,19 +61,18 @@ function insertNewDeposits(addressDeposits) {
                         $setOnInsert: {
                             txid: deposit.txid,
                             amount: deposit.amount,
-                            address: deposit.address,
+                            addressId: key,
                             currentBalance: deposit.currentBalance 
                         },
                     },
                     upsert: true,
-                    new: true, setDefaultsOnInsert: true
+                    new: true, setDefaultsOnInsert: true 
                 }
             })
             )
         )
             .then(deposit => { 
                 if (deposit && deposit.upsertedIds) {
-                    console.log(deposit.upsertedIds)
                     addDepositToAddress(key,Object.values(deposit.upsertedIds))
                 }
                 else {

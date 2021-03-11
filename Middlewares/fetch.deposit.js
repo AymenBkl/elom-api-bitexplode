@@ -59,9 +59,9 @@ function insertNewDeposits(addressDeposits) {
                     update: {
                         $setOnInsert: {
                             txid: deposit.txid,
-                            amount: deposit.amount,
+                            amount: deposit.amount * 100000000,
                             addressId: key,
-                            currentBalance: deposit.currentBalance 
+                            currentBalance: deposit.currentBalance * 100000000
                         },
                     },
                     upsert: true,

@@ -8,7 +8,7 @@ const checkGame = require('./checkGame');
 
 module.exports = {
     createGame: (req,res) => {
-        createGame.createGame(res,req.body.gameHash,req.body.game);
+        createGame.createGame(res,req.body.gameHash,req.body.game,req.body.addressId);
     },
 
     clickCel: (req,res) => {

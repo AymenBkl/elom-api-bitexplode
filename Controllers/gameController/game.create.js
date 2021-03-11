@@ -8,8 +8,11 @@ const hash = require('../../Models/hash');
 
 const encrypt = require('../../Middlewares/encrypte');
 
-module.exports.createGame = async (res, hashId,game) => {
-  let gameToCreate = {
+const deposit = require('../../Models/deposit');
+
+module.exports.createGame = async (res, hashId, game, addressId) => {
+  checkStake(addressId, game.stake)
+  /**let gameToCreate = {
     hash: hashId,
     stake: game.stake,
     numberMines: game.numberMines,
@@ -24,16 +27,16 @@ module.exports.createGame = async (res, hashId,game) => {
     .then((gameCreated) => {
       if (gameCreated) {
         console.log(gameCreated);
-        insertGameToHash(res,hashId,gameCreated);
+        insertGameToHash(res, hashId, gameCreated);
       }
       else {
-        gameHandler.response("error",res,"YOUR GAME COULDNLT CREATE",404);
+        gameHandler.response("error", res, "YOUR GAME COULDNLT CREATE", 404);
       }
     })
     .catch(err => {
       console.log(err);
-      gameHandler.response("error",res,"SOMETHING WENT WRONG",500);
-    })
+      gameHandler.response("error", res, "SOMETHING WENT WRONG", 500);
+    })**/
 }
 
 async function createMatrix(numberMines) {
@@ -43,7 +46,7 @@ async function createMatrix(numberMines) {
 
 async function createMine(game, numberMines) {
   let i = 0;
-  let indexes = 'Your mines are : '; 
+  let indexes = 'Your mines are : ';
   while (i < numberMines) {
     let rowIndex = Math.floor(Math.random() * 5);
     let colIndex = Math.floor(Math.random() * 5);
@@ -53,35 +56,64 @@ async function createMine(game, numberMines) {
       i += 1;
     }
   }
-  return {game: game,data: await encrypt.encrypt(indexes)};
+  return { game: game, data: await encrypt.encrypt(indexes) };
 };
 
+function checkStake(addressId, stake) {
+  deposit.find(
+    {
+      addressId: addressId,
+      currentBalance:
+        { $gt: 0 }
+    }
+  )
+    .then((deposits) => {
 
-function insertGameToHash(res,hashId, currentGame) {
-  hash.findByIdAndUpdate(hashId , {
-    $push : {
+      if (deposits && deposits.length > 0) {
+        let depositIds = [];
+        let currentStake = stake;
+        let index = 0;
+        while (index < deposits.length) {
+          if (deposits[index].currentBalance >= currentStake){
+            deposits[index].currentBalance -= currentStake;
+            depositIds.push(deposits[index]);
+            index = deposits.length + 1;
+          } 
+          else {
+            currentStake -= deposits[index].currentBalance;
+            depositIds.push(deposits[index]);
+            index += 1;
+          }
+        }
+        console.log(depositIds); 
+      }
+    })
+}
+function insertGameToHash(res, hashId, currentGame) {
+  hash.findByIdAndUpdate(hashId, {
+    $push: {
       games: currentGame._id
     }
   },
-  {
-    new: true,useFindAndModify:true
-  }
+    {
+      new: true, useFindAndModify: true
+    }
   )
-  .select("-hash -salt")
-  .then(() => {
-    gameHandler.response("success", res, "YOUR GAME HAS BEEN CREATED", 200,
-      {
-        _id: currentGame._id,
-        stake: currentGame.stake,
-        numberMines: currentGame.numberMines,
-        userClick: 0, playing: currentGame.playing,
-        completed: currentGame.completed,
-        data:{encryptedData: currentGame.data.encryptedData}
-      });
-  })
-  .catch((err) => {
-    console.log(err);
-    gameHandler.response("error",res,"SOMETHING WENT WRONG",500);
-  })
+    .select("-hash -salt")
+    .then(() => {
+      gameHandler.response("success", res, "YOUR GAME HAS BEEN CREATED", 200,
+        {
+          _id: currentGame._id,
+          stake: currentGame.stake,
+          numberMines: currentGame.numberMines,
+          userClick: 0, playing: currentGame.playing,
+          completed: currentGame.completed,
+          data: { encryptedData: currentGame.data.encryptedData }
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      gameHandler.response("error", res, "SOMETHING WENT WRONG", 500);
+    })
 }
 

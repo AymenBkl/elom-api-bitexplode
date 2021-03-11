@@ -67,6 +67,10 @@ const gameSchema = new Schema({
             type : String,
             required:true
         }
+    },
+    balance: {
+        type: Number,
+        default:0
     }
 },{
     autoIndex:true,

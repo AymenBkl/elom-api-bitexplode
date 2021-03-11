@@ -85,7 +85,6 @@ function insertNewDeposits(addressDeposits) {
 }
 
 function addDepositToAddress(addressId,depositId) {
-    console.log('id',addressId,depositId);
     if (depositId.length > 0) {   
         address.findByIdAndUpdate(addressId , {
             $push : {

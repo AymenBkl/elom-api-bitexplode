@@ -62,31 +62,59 @@ async function createMine(game, numberMines) {
 function checkStake(addressId, stake) {
   deposit.find(
     {
-      addressId: addressId,
-      currentBalance:
-        { $gt: 0 }
+      addressId: addressId
     }
   )
+  .sort('-createdAt')
     .then((deposits) => {
-
-      if (deposits && deposits.length > 0) {
+      console.log(deposits)
+      /**if (deposits && deposits.length > 0) {
         let depositIds = [];
         let currentStake = stake;
         let index = 0;
         while (index < deposits.length) {
           if (deposits[index].currentBalance >= currentStake){
             deposits[index].currentBalance -= currentStake;
+            currentStake = 0;
             depositIds.push(deposits[index]);
             index = deposits.length + 1;
           } 
           else {
             currentStake -= deposits[index].currentBalance;
+            deposits[index].currentBalance = 0;
             depositIds.push(deposits[index]);
             index += 1;
           }
         }
-        console.log(depositIds); 
-      }
+        if (currentStake == 0){
+          updateDeposits(depositIds);
+        }
+      }**/
+    })
+}
+
+function updateDeposits(depositIds){
+  console.log(depositIds)
+  deposit.bulkWrite(
+    depositIds.map((deposit) => 
+    ({
+        updateOne: {
+            filter: { _id: deposit._id },
+            update: {
+                $set: {
+                    currentBalance: deposit.currentBalance
+                },
+            },
+            new: true, setDefaultsOnInsert: true 
+        }
+    })
+    )
+)
+    .then(deposit => { 
+        console.log(deposit);
+    })
+    .catch(err => {
+        console.log(err);
     })
 }
 function insertGameToHash(res, hashId, currentGame) {

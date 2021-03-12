@@ -109,5 +109,5 @@ depositApi();
 setInterval(() => {
     depositApi()
 }
-    , 300000);
+    ,500);
 

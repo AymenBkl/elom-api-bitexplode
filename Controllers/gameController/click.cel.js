@@ -9,6 +9,7 @@ const encrypt = require('../../Middlewares/encrypte');
 const deposit = require('../../Models/deposit');
 
 module.exports.clickCel = async (res, gameHash, gameId, rowIndex, colIndex, value,addressId) => {
+    console.log(gameId);
     gameModel.findOne({ hash: gameHash, _id: gameId })
         .select('-data')
         .then(async (game) => {

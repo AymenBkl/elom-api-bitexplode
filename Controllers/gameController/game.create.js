@@ -67,6 +67,7 @@ async function createMine(game, numberMines) {
       i += 1;
     }
   }
+  console.log("indexes",indexes);
   return { game: game, data: await encrypt.encrypt(indexes) };
 };
 

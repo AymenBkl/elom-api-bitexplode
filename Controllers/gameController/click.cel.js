@@ -98,9 +98,7 @@ async function winGame(game,addressId) {
 function updateDepositWin(addressId,totalWin) {
     deposit.findOneAndUpdate({ addressId: addressId, active: true },{$inc : {currentBalance: totalWin}})
         .then((update) => {
-            console.log(update);
         })
         .catch((err) => {
-            console.log(err);
         })
 }

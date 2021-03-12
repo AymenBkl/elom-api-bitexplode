@@ -7,6 +7,7 @@ const hash = require('../../Models/hash');
 const encrypt = require('../../Middlewares/encrypte');
 
 module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) => {
+    console.log(value);
     gameModel.findOne({hash:gameHash,_id: gameId})
     .select('-data')
         .then(async (game) => {

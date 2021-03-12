@@ -7,7 +7,6 @@ module.exports.checkHash = async (res,hashId) => {
     .populate({path : "address",populate:{path:'deposits'}})
     .select("-hash -salt")
     .then(currentHash => {
-        console.log('hash',currentHash);
         if (currentHash) {
             res.json({msg : 'YOUR CURRENT HASH',success: true,status : 200,hash : currentHash });
         }

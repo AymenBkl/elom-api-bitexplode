@@ -7,7 +7,6 @@ const hash = require('../../Models/hash');
 const encrypt = require('../../Middlewares/encrypte');
 
 module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) => {
-    console.log(value);
     gameModel.findOne({hash:gameHash,_id: gameId})
     .select('-data')
         .then(async (game) => {
@@ -65,6 +64,7 @@ module.exports.clickCel = async (res,gameHash,gameId,rowIndex,colIndex,value) =>
 
 async function loseGame(game) {
     let indexMines = [];
+    let totalLose = 0;
     game.completed = true;
     game.playing = false;
     await game.matrix.map((row,indexRow) => {
@@ -72,13 +72,16 @@ async function loseGame(game) {
             if (col.color == 'red'){
                 indexMines.push({indexRow : indexRow, indexCol : indexCol});
             }
+            totalLose -= col.value;
         })
     })
+    console.log(totalLose);
     return indexMines;
 }
 
 async function winGame(game) {
     let indexMines = [];
+    let totalWin = 0;
     game.completed = true;
     game.playing = false;
     await game.matrix.map((row,indexRow) => {
@@ -86,7 +89,9 @@ async function winGame(game) {
             if (col.color == 'red'){
                 indexMines.push({indexRow : indexRow, indexCol : indexCol});
             }
+            totalWin += col.value;
         })
     })
+    console.log(totalWin);
     return indexMines;
 }

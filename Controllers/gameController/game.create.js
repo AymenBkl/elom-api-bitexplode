@@ -14,7 +14,7 @@ module.exports.createGame = async (res, hashId, game, addressId) => {
   checkStake(addressId, game.stake)
     .then(async (result) => {
       console.log("game",result);
-      /**if (result && result.status != false) {
+      if (result && result.status != false) {
         let gameToCreate = {
           hash: hashId,
           stake: game.stake,
@@ -43,7 +43,7 @@ module.exports.createGame = async (res, hashId, game, addressId) => {
       }
       else {
         gameHandler.response("error", res, result.msg, 409);
-      }**/
+      }
     })
     .catch(err => {
       gameHandler.response("error", res, "Something Went Wrong !",500);

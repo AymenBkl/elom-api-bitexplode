@@ -68,10 +68,6 @@ const gameSchema = new Schema({
             required:true
         }
     },
-    balance: {
-        type: Number,
-        default:0
-    }
 },{
     autoIndex:true,
     timestamps : true

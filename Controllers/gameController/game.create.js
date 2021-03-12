@@ -13,7 +13,8 @@ const deposit = require('../../Models/deposit');
 module.exports.createGame = async (res, hashId, game, addressId) => {
   checkStake(addressId, game.stake)
     .then(async (result) => {
-      if (result && result.state != false) {
+      console.log("game",result);
+      if (result && result.status != false) {
         let gameToCreate = {
           hash: hashId,
           stake: game.stake,
@@ -41,7 +42,7 @@ module.exports.createGame = async (res, hashId, game, addressId) => {
           })
       }
       else {
-        gameHandler.response("error", res, result.msg, 404);
+        gameHandler.response("error", res, result.msg, 409);
       }
     })
     .catch(err => {
@@ -103,7 +104,7 @@ function checkStake(addressId, stake) {
             resolve(updateDeposits(depositIds));
           }
           else {
-            resolve({statue:false,msg: 'You don"t have enough balance'});
+            resolve({status:false,msg: 'You don"t have enough balance'});
           }
         }
       })

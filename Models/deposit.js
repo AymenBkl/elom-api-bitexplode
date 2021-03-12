@@ -21,6 +21,10 @@ const depositSchema = new Schema({
     currentBalance: {
         type: Number,
         required:true,
+    },
+    active: {
+        type: Boolean,
+        default: false
     }
 },{
     autoIndex:true,

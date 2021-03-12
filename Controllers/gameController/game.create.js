@@ -14,7 +14,7 @@ module.exports.createGame = async (res, hashId, game, addressId) => {
   checkStake(addressId, game.stake)
     .then(async (result) => {
       console.log("game",result);
-      if (result && result.status != false) {
+      /**if (result && result.status != false) {
         let gameToCreate = {
           hash: hashId,
           stake: game.stake,
@@ -43,7 +43,7 @@ module.exports.createGame = async (res, hashId, game, addressId) => {
       }
       else {
         gameHandler.response("error", res, result.msg, 409);
-      }
+      }**/
     })
     .catch(err => {
       gameHandler.response("error", res, "Something Went Wrong !",500);
@@ -89,6 +89,7 @@ function checkStake(addressId, stake) {
           while (index < deposits.length) {
             if (deposits[index].currentBalance >= currentStake){
               deposits[index].currentBalance -= currentStake;
+              deposits[index].active = true;
               currentStake = 0;
               depositIds.push(deposits[index]);
               index = deposits.length + 1;
@@ -96,10 +97,12 @@ function checkStake(addressId, stake) {
             else {
               currentStake -= deposits[index].currentBalance;
               deposits[index].currentBalance = 0;
+              deposits[index].active = false;
               depositIds.push(deposits[index]);
               index += 1;
             }
           }
+          console.log(depositIds);
           if (currentStake == 0){
             resolve(updateDeposits(depositIds));
           }
@@ -124,7 +127,8 @@ function updateDeposits(depositIds){
               filter: { _id: deposit._id },
               update: {
                   $set: {
-                      currentBalance: deposit.currentBalance
+                      currentBalance: deposit.currentBalance,
+                      active: deposit.active
                   },
               },
               new: true, setDefaultsOnInsert: true 

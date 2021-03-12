@@ -95,3 +95,4 @@ async function winGame(game) {
     console.log(totalWin);
     return indexMines;
 }
+

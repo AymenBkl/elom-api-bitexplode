@@ -14,6 +14,7 @@ router.all('/', function(req, res, next) {
 })
 .post('/creategame',cors.corsWithOptions,jwt.verifyHash,gameController.createGame)
 .post('/clickcel',cors.corsWithOptions,jwt.verifyHash,gameController.clickCel)
+.post('/cashout',cors.corsWithOptions,jwt.verifyHash,gameController.cashOut)
 .post('/checkgame',cors.corsWithOptions,jwt.verifyHash,gameController.checkGame);
 
 module.exports = router;

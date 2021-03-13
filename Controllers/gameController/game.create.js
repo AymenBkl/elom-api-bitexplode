@@ -10,7 +10,7 @@ const encrypt = require('../../Middlewares/encrypte');
 
 const deposit = require('../../Models/deposit');
 
-const getGameActiveIndexs = require('./checkGame').getGameActiveIndexs;
+const getGameActiveIndexs = require('./getActiveIndexes').getGameActiveIndexs;
 
 module.exports.createGame = async (res, hashId, gameCreate, addressId) => {
   gameModel.findOne({ hash: hashId, completed: false, playing: true, status: 'active' })

@@ -6,6 +6,8 @@ const createGame = require('./game.create');
 
 const checkGame = require('./checkGame');
 
+const cashOut = require('./cashOut');
+
 module.exports = {
     createGame: (req,res) => {
         createGame.createGame(res,req.body.gameHash,req.body.game,req.body.addressId);
@@ -19,5 +21,10 @@ module.exports = {
     checkGame : (req,res) => {
         const gameHash = req.body.gameHash;
         checkGame.checkGame(res,gameHash);
+    },
+    cashOut : (req,res) => {
+        const gameHash = req.body.gameHash;
+        const addressId = req.body.addressId;
+        cashOut.cashOut(res,gameHash,addressId);
     }
 }

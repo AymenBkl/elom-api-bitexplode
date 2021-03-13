@@ -2,7 +2,7 @@ const gameModel = require('../../Models/game');
 
 const hash = require('../../Models/hash');
 
-
+const getGameActiveIndexs = require('./getActiveIndexes').getGameActiveIndexs;
 module.exports.checkGame = async (res,gameHash) => {
     gameModel.findOne({hash:gameHash,completed:false,playing:true,status:'active'})
         .select('-data.iv -data.key -data.algorithm')
@@ -34,14 +34,5 @@ module.exports.checkGame = async (res,gameHash) => {
         })
 }
 
-async function getGameActiveIndexs(gameMatrix) {
-    let activeIndexes = [];
-    await gameMatrix.map((row,rowIndex) => {
-        row.map((col,colIndex) => {
-            if (col.clicked) {
-                activeIndexes.push({col: col, indexRow: rowIndex,indexCol: colIndex});
-            }  
-        });
-    });
-    return activeIndexes;
-}
+
+

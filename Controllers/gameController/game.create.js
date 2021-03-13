@@ -10,44 +10,82 @@ const encrypt = require('../../Middlewares/encrypte');
 
 const deposit = require('../../Models/deposit');
 
-module.exports.createGame = async (res, hashId, game, addressId) => {
-  checkStake(addressId, game.stake)
-    .then(async (result) => {
-      console.log("game",result);
-      if (result && result.status != false) {
-        let gameToCreate = {
-          hash: hashId,
-          stake: game.stake,
-          numberMines: game.numberMines,
-          userClick: 0,
-          playing: true,
-          completed: false,
-        }
-        let matrix = await createMatrix(game.numberMines)
-        gameToCreate.matrix = matrix.game;
-        gameToCreate.data = matrix.data;
-        gameModel.create(gameToCreate)
-          .then((gameCreated) => {
-            if (gameCreated) {
-              console.log(gameCreated);
-              insertGameToHash(res, hashId, gameCreated);
-            }
-            else {
-              gameHandler.response("error", res, "YOUR GAME COULDNLT CREATE", 404);
-            }
+const getGameActiveIndexs = require('./checkGame').getGameActiveIndexs;
+
+module.exports.createGame = async (res, hashId, gameCreate, addressId) => {
+  gameModel.findOne({ hash: hashId, completed: false, playing: true, status: 'active' })
+    .select('-data.iv -data.key -data.algorithm')
+    .then(async (game) => {
+      if (game) {
+        const activeIndex = await getGameActiveIndexs(game.matrix);
+        console.log(activeIndex);
+        res.json({
+          msg: 'YOU ALREADY HAVE A GAME', success: true, status: 200, game:
+          {
+            game: {
+              _id: game._id,
+              stake: game.stake,
+              numberMines: game.numberMines,
+              userClick: game.userClick,
+              playing: game.playing,
+              completed: game.completed,
+              data: { encryptedData: game.data.encryptedData }
+            },
+            activeIndex: activeIndex,
+          }
+        });
+      } else {
+        console.log("here");
+        checkStake(addressId, gameCreate.stake)
+          .then(async (result) => {
+            console.log("game", result);
+            createGame(res, hashId, gameCreate, result);
           })
           .catch(err => {
-            console.log(err);
-            gameHandler.response("error", res, "SOMETHING WENT WRONG", 500);
+            gameHandler.response("error", res, "Something Went Wrong !", 500);
           })
-      }
-      else {
-        gameHandler.response("error", res, result.msg, 409);
       }
     })
     .catch(err => {
-      gameHandler.response("error", res, "Something Went Wrong !",500);
+      console.log(err);
+      res.json({ msg: 'SOMETHING WENT WRONG', success: true, status: 500, game: null });
+
     })
+
+}
+
+
+async function createGame(res, hashId, game, result) {
+  if (result && result.status != false) {
+    let gameToCreate = {
+      hash: hashId,
+      stake: game.stake,
+      numberMines: game.numberMines,
+      userClick: 0,
+      playing: true,
+      completed: false,
+    }
+    let matrix = await createMatrix(game.numberMines)
+    gameToCreate.matrix = matrix.game;
+    gameToCreate.data = matrix.data;
+    gameModel.create(gameToCreate)
+      .then((gameCreated) => {
+        if (gameCreated) {
+          console.log(gameCreated);
+          insertGameToHash(res, hashId, gameCreated);
+        }
+        else {
+          gameHandler.response("error", res, "YOUR GAME COULDNLT CREATE", 404);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        gameHandler.response("error", res, "SOMETHING WENT WRONG", 500);
+      })
+  }
+  else {
+    gameHandler.response("error", res, result.msg, 409);
+  }
 }
 
 async function createMatrix(numberMines) {
@@ -67,34 +105,36 @@ async function createMine(game, numberMines) {
       i += 1;
     }
   }
-  console.log("indexes",indexes);
+  console.log("indexes", indexes);
   return { game: game, data: await encrypt.encrypt(indexes) };
 };
 
+
+
 function checkStake(addressId, stake) {
-  return new Promise((resolve,reject) => {
+  return new Promise((resolve, reject) => {
     deposit.find(
       {
         addressId: addressId,
         currentBalance: {
-          $gt:0
+          $gt: 0
         }
       }
     )
-    .sort('-createdAt')
+      .sort('-createdAt')
       .then(async (deposits) => {
         if (deposits && deposits.length > 0) {
           let depositIds = [];
           let currentStake = stake;
           let index = 0;
           while (index < deposits.length) {
-            if (deposits[index].currentBalance >= currentStake){
+            if (deposits[index].currentBalance >= currentStake) {
               deposits[index].currentBalance -= currentStake;
               deposits[index].active = true;
               currentStake = 0;
               depositIds.push(deposits[index]);
               index = deposits.length + 1;
-            } 
+            }
             else {
               currentStake -= deposits[index].currentBalance;
               deposits[index].currentBalance = 0;
@@ -104,11 +144,11 @@ function checkStake(addressId, stake) {
             }
           }
           console.log(depositIds);
-          if (currentStake == 0){
+          if (currentStake == 0) {
             resolve(updateDeposits(depositIds));
           }
           else {
-            resolve({status:false,msg: 'You don"t have enough balance'});
+            resolve({ status: false, msg: 'You don"t have enough balance' });
           }
         }
       })
@@ -116,36 +156,36 @@ function checkStake(addressId, stake) {
         reject(err);
       })
   })
-  
+
 }
 
-function updateDeposits(depositIds){
-  return new Promise((resolve,reject) => {
+function updateDeposits(depositIds) {
+  return new Promise((resolve, reject) => {
     deposit.bulkWrite(
-      depositIds.map((deposit) => 
+      depositIds.map((deposit) =>
       ({
-          updateOne: {
-              filter: { _id: deposit._id },
-              update: {
-                  $set: {
-                      currentBalance: deposit.currentBalance,
-                      active: deposit.active
-                  },
-              },
-              new: true, setDefaultsOnInsert: true 
-          }
+        updateOne: {
+          filter: { _id: deposit._id },
+          update: {
+            $set: {
+              currentBalance: deposit.currentBalance,
+              active: deposit.active
+            },
+          },
+          new: true, setDefaultsOnInsert: true
+        }
       })
       )
-  )
-      .then(deposit => { 
-          console.log(deposit);
-          resolve({status:true});
+    )
+      .then(deposit => {
+        console.log(deposit);
+        resolve({ status: true });
       })
       .catch(err => {
-          reject(err);
+        reject(err);
       })
   })
-  
+
 }
 function insertGameToHash(res, hashId, currentGame) {
   hash.findByIdAndUpdate(hashId, {

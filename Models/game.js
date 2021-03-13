@@ -68,6 +68,10 @@ const gameSchema = new Schema({
             required:true
         }
     },
+    status : {
+        type: String,
+        default:'active'
+    }
 },{
     autoIndex:true,
     timestamps : true

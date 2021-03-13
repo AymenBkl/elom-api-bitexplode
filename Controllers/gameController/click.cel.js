@@ -8,9 +8,8 @@ const encrypt = require('../../Middlewares/encrypte');
 
 const deposit = require('../../Models/deposit');
 
-module.exports.clickCel = async (res, gameHash, gameId, rowIndex, colIndex, value,addressId) => {
-    console.log(gameId);
-    gameModel.findOne({ hash: gameHash, _id: gameId,completed:false,playing:true})
+module.exports.clickCel = async (res, gameHash, rowIndex, colIndex, value,addressId) => {
+    gameModel.findOne({ hash: gameHash,completed:false,playing:true,status:'active'})
         .select('-data')
         .then(async (game) => {
             if (game) {
@@ -22,6 +21,7 @@ module.exports.clickCel = async (res, gameHash, gameId, rowIndex, colIndex, valu
                         cel.value = value
                         if ((game.numberMines + game.userClick) == 25) {
                             const indexMines = await winGame(game,addressId);
+                            game.status = 'win';
                             gameModel.findOne({ hash: gameHash, _id: gameId })
                                 .then(async (gameWin) => {
                                     const decryptedData = await encrypt.decrypted(gameWin.data);
@@ -37,6 +37,7 @@ module.exports.clickCel = async (res, gameHash, gameId, rowIndex, colIndex, valu
                     else {
                         cel.clicked = true;
                         const indexMines = await loseGame(game);
+                        game.status = 'lose';
                         gameModel.findOne({ hash: gameHash, _id: gameId })
                             .then(async (gameLose) => {
                                 const decryptedData = await encrypt.decrypted(gameLose.data);
@@ -47,6 +48,9 @@ module.exports.clickCel = async (res, gameHash, gameId, rowIndex, colIndex, valu
                     gameModel.updateOne({ _id: gameId }, game)
                         .then((updated => {
                         }))
+                }
+                else if (cel.clicked && game.playing && !game.completed){
+                    res.json({ msg: 'This cell is already clicked', success: true, status: 200, response: { userClick: game.userClick, color: cel.color,value:cel.value } });
                 }
             }
 

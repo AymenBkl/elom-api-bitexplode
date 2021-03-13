@@ -12,14 +12,12 @@ module.exports = {
     },
 
     clickCel: (req,res) => {
-        const gameId = req.body.gameId;
         const gameHash = req.body.gameHash;
-        clickCel.clickCel(res,gameHash,gameId,req.body.rowIndex,req.body.colIndex,req.body.value,req.body.addressId);
+        clickCel.clickCel(res,gameHash,req.body.rowIndex,req.body.colIndex,req.body.value,req.body.addressId);
     },
 
     checkGame : (req,res) => {
-        const gameId = req.body.gameId;
         const gameHash = req.body.gameHash;
-        checkGame.checkGame(res,gameHash,gameId);
+        checkGame.checkGame(res,gameHash);
     }
 }

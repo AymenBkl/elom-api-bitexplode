@@ -29,6 +29,7 @@ module.exports.createGame = async (res, hashId, gameCreate, addressId) => {
               userClick: game.userClick,
               playing: game.playing,
               completed: game.completed,
+              status:'active',
               data: { encryptedData: game.data.encryptedData }
             },
             activeIndex: activeIndex,

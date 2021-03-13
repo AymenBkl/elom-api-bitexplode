@@ -12,6 +12,7 @@ module.exports.clickCel = async (res, gameHash, rowIndex, colIndex, value,addres
     gameModel.findOne({ hash: gameHash,completed:false,playing:true,status:'active'})
         .select('-data')
         .then(async (game) => {
+            console.log(game);
             if (game) {
                 let cel = game.matrix[rowIndex][colIndex];
                 if (!cel.clicked && game.playing && !game.completed) {
@@ -22,7 +23,7 @@ module.exports.clickCel = async (res, gameHash, rowIndex, colIndex, value,addres
                         if ((game.numberMines + game.userClick) == 25) {
                             const indexMines = await winGame(game,addressId);
                             game.status = 'win';
-                            gameModel.findOne({ hash: gameHash, _id: gameId })
+                            gameModel.findOne({ hash: gameHash,completed:false,playing:true,status:'active' })
                                 .then(async (gameWin) => {
                                     const decryptedData = await encrypt.decrypted(gameWin.data);
                                     res.json({ msg: 'YOU WON THE GAME', success: true, status: 200, response: { userClick: game.userClick, indexMines: indexMines, color: 'green', data: gameWin.data, mines: decryptedData } });
@@ -38,14 +39,14 @@ module.exports.clickCel = async (res, gameHash, rowIndex, colIndex, value,addres
                         cel.clicked = true;
                         const indexMines = await loseGame(game);
                         game.status = 'lose';
-                        gameModel.findOne({ hash: gameHash, _id: gameId })
+                        gameModel.findOne({ hash: gameHash,completed:false,playing:true,status:'active' })
                             .then(async (gameLose) => {
                                 const decryptedData = await encrypt.decrypted(gameLose.data);
                                 res.json({ msg: 'YOU HAVE CLICK MINE CELL', success: true, status: 200, response: { userClick: game.userClick, indexMines: indexMines, color: 'red', data: gameLose.data, mines: decryptedData } });
                             })
                     }
                     game.matrix[rowIndex][colIndex] = cel;
-                    gameModel.updateOne({ _id: gameId }, game)
+                    gameModel.updateOne({completed:false,playing:true,status:'active' }, game)
                         .then((updated => {
                         }))
                 }

@@ -4,7 +4,6 @@ const hash = require('../../Models/hash');
 
 
 module.exports.checkGame = async (res,gameHash) => {
-    console.log(gameId);
     gameModel.findOne({hash:gameHash,completed:false,playing:true,status:'active'})
         .select('-data.iv -data.key -data.algorithm')
         .then(async (game) => {

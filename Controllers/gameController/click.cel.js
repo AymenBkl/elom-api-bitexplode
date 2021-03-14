@@ -46,6 +46,7 @@ module.exports.clickCel = async (res, gameHash, rowIndex, colIndex, value,addres
                             })
                     }
                     game.matrix[rowIndex][colIndex] = cel;
+
                     gameModel.updateOne({completed:false,playing:true,status:'active' }, game)
                         .then((updated => {
                         }))

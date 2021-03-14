@@ -10,7 +10,7 @@ module.exports.cashOut = (res, gameHash, addressId) => {
         .select('-data')
         .then(async (game) => {
             console.log(game);
-            if (game) {
+            if (game && game.type == 'bitcoin') {
                 const indexMines = await cashOut(game, addressId);
                 game.status = 'withdraw';
                 gameModel.findOneAndUpdate({completed:false,playing:true,status:'active' }, game,{$new:true})
@@ -18,6 +18,9 @@ module.exports.cashOut = (res, gameHash, addressId) => {
                             const decryptedData = await encrypt.decrypted(game.data);
                             res.json({ msg: 'YOU WITHDRAW THE GAME', success: true, status: 200, response: { userClick: game.userClick, indexMines: indexMines, color: 'green', data: game.data, mines: decryptedData } });
                         })
+            }
+            else if (game && game.type == 'test'){
+                res.json({ msg: 'YOU CAN"T CASHOUT ON TEST GAME', success: true, status: 404, response: null });
             }
             else {
                 res.json({ msg: 'YOU HAVE NO GAME', success: true, status: 404, response: null });

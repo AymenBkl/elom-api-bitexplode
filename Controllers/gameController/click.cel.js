@@ -97,7 +97,9 @@ async function winGame(game,addressId) {
             totalWin += col.value;
         })
     })
-    updateDepositWin(addressId,totalWin)
+    if (game.type == 'bitcoin'){
+        updateDepositWin(addressId,totalWin)
+    }
     return indexMines;
 }
 

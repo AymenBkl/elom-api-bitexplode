@@ -24,10 +24,7 @@ opts.jwtFromRequest = extractJwt.fromAuthHeaderAsBearerToken();
 
 exports.jwtPassport = passport.use(
   new passportJwtStrategy(opts, (jwt_payload, done) => {
-    console.log("jwt:payload", jwt_payload);
-
     hashModel.findOne({ _id: jwt_payload._id }, (err, hashs) => {
-        console.log(err,hashs);
       if (err) {
         return done(err, false);
       } else if (hashs) {

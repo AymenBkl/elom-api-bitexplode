@@ -18,7 +18,6 @@ module.exports.createGame = async (res, hashId, gameCreate, addressId) => {
     .then(async (game) => {
       if (game) {
         const activeIndex = await getGameActiveIndexs(game.matrix);
-        console.log(activeIndex);
         res.json({
           msg: 'YOU ALREADY HAVE A GAME', success: true, status: 200, game:
           {
@@ -39,7 +38,6 @@ module.exports.createGame = async (res, hashId, gameCreate, addressId) => {
         if (gameCreate.type == 'bitcoin'){
           checkStake(addressId, gameCreate.stake)
           .then(async (result) => {
-            console.log("game", result);
             createGame(res, hashId, gameCreate, result);
           })
           .catch(err => {
@@ -78,7 +76,6 @@ async function createGame(res, hashId, game, result) {
     gameModel.create(gameToCreate)
       .then((gameCreated) => {
         if (gameCreated) {
-          console.log(gameCreated);
           insertGameToHash(res, hashId, gameCreated);
         }
         else {
@@ -150,7 +147,6 @@ function checkStake(addressId, stake) {
               index += 1;
             }
           }
-          console.log(depositIds);
           if (currentStake == 0) {
             resolve(updateDeposits(depositIds));
           }

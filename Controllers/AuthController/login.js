@@ -1,5 +1,5 @@
 
-const jwt = require('../../middlewares/jwt/jwt');
+const jwt = require('../../Middlewares/jwt/jwt');
 const response = require('../../HashHandler/response.controller');
 var  passport = require("passport");
 const hash= require("../../Models/hash");

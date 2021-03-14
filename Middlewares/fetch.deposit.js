@@ -10,7 +10,7 @@ const deposit = require('../Models/deposit');
 var depositApi = () => {
     address.find({})
         .then(addresses => {
-            if (addresses && address.length > 0) {
+            if (addresses && addresses.length > 0) {
                 listUnspent(addresses)
                     .then(async (result) => {
                         if (result && result.data && result.data.result.length > 0) {

@@ -152,6 +152,9 @@ function checkStake(addressId, stake) {
             resolve({ status: false, msg: 'You don"t have enough balance' });
           }
         }
+        else if (deposits && deposits.length == 0) {
+          resolve({ status: false, msg: 'You don"t have enough balance' });
+        }
       })
       .catch(err => {
         reject(err);

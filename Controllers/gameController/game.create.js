@@ -36,8 +36,8 @@ module.exports.createGame = async (res, hashId, gameCreate, addressId) => {
           }
         });
       } else {
-        console.log("here");
-        checkStake(addressId, gameCreate.stake)
+        if (gameCreate.type == 'bitcoin'){
+          checkStake(addressId, gameCreate.stake)
           .then(async (result) => {
             console.log("game", result);
             createGame(res, hashId, gameCreate, result);
@@ -45,6 +45,11 @@ module.exports.createGame = async (res, hashId, gameCreate, addressId) => {
           .catch(err => {
             gameHandler.response("error", res, "Something Went Wrong !", 500);
           })
+        }
+        else if (gameCreate.type == 'test') {
+            createGame(res, hashId, gameCreate, {status:true,msg:"COULDN'T CREATE TEST GAME "});
+        }
+        
       }
     })
     .catch(err => {

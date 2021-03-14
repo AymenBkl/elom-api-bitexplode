@@ -71,6 +71,10 @@ const gameSchema = new Schema({
     status : {
         type: String,
         default:'active'
+    },
+    type:{
+        type:String,
+        default:'test'
     }
 },{
     autoIndex:true,

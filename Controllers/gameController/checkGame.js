@@ -19,7 +19,8 @@ module.exports.checkGame = async (res,gameHash) => {
                         userClick: game.userClick,
                         playing: game.playing,
                         completed: game.completed,
-                        status:'active',
+                        status:game.status,
+                        type:game.type,
                         data:{encryptedData: game.data.encryptedData}
                       },
                     activeIndex:activeIndex,

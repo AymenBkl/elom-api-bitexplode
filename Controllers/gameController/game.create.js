@@ -70,6 +70,7 @@ async function createGame(res, hashId, game, result) {
       userClick: 0,
       playing: true,
       completed: false,
+      type:game.type
     }
     let matrix = await createMatrix(game.numberMines)
     gameToCreate.matrix = matrix.game;
@@ -215,6 +216,7 @@ function insertGameToHash(res, hashId, currentGame) {
           numberMines: currentGame.numberMines,
           userClick: 0, playing: currentGame.playing,
           completed: currentGame.completed,
+          type:currentGame.type,
           data: { encryptedData: currentGame.data.encryptedData }
         });
     })

@@ -41,6 +41,7 @@ module.exports.createGame = async (res, hashId, gameCreate, addressId) => {
             createGame(res, hashId, gameCreate, result);
           })
           .catch(err => {
+            console.log(err);
             gameHandler.response("error", res, "Something Went Wrong !", 500);
           })
         }
@@ -159,6 +160,7 @@ function checkStake(addressId, stake) {
         }
       })
       .catch(err => {
+        console.log(err);
         reject(err);
       })
   })
@@ -188,6 +190,7 @@ function updateDeposits(depositIds) {
         resolve({ status: true });
       })
       .catch(err => {
+        console.log(err);
         reject(err);
       })
   })

@@ -7,7 +7,7 @@ const encrypt = require('../../Middlewares/encrypte');
 
 module.exports.cashOut = (res, gameHash, addressId) => {
     gameModel.findOne({ hash: gameHash, completed: false, playing: true, status: 'active' })
-        .select('-data')
+        .select('-data -_id')
         .then(async (game) => {
             console.log(game);
             if (game && game.type == 'bitcoin') {

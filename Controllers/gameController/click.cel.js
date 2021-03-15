@@ -10,7 +10,7 @@ const deposit = require('../../Models/deposit');
 
 module.exports.clickCel = async (res, gameHash, rowIndex, colIndex, value,addressId) => {
     gameModel.findOne({ hash: gameHash,completed:false,playing:true,status:'active'})
-        .select('-data')
+        .select('-data -_id')
         .then(async (game) => {
             console.log(game);
             if (game) {

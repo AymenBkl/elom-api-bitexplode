@@ -9,7 +9,7 @@ router.all('/', function(req, res, next) {
     next();
 })
 
-.options('/',cors.corsWithOptions,jwt.verifyHash, function(req, res, next) {
+.options('/',cors.corsWithOptions,jwt.verifyHash,jwt.verifyHashValid, function(req, res, next) {
     next();
 })
 

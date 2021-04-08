@@ -38,6 +38,25 @@ exports.jwtPassport = passport.use(
 
 exports.verifyHash = passport.authenticate("jwt", { session: false });
 
+exports.verifyHashValid = (req, res, next) => {
+  if (req.user) {
+    if (req.user && req.user.status != 'blocked') {
+      next();
+    } 
+    else if (req.user && req.user.status == 'blocked'){
+      res.statusCode = 403;
+      res.json({status : 403,msg : 'you are blocked'});
+    }
+    else {
+      res.statusCode = 403;
+      res.json({status : 403,msg : 'you are not allow to do this operation'});
+    }
+  } else {
+    res.statusCode = 403;
+    res.json({status : 403,msg : 'login first'});
+  }
+};
+
 
 var localStrategy = require("passport-local").Strategy;
 

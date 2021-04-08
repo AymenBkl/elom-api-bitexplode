@@ -13,7 +13,7 @@ router.all('/', function(req, res, next) {
 })
 .get('/checkJWT',cors.corsWithOptions,authController.checkJWT)
 
-.post('/securepassword',cors.corsWithOptions,jwt.verifyHash,authController.securePassword)
+.post('/securepassword',cors.corsWithOptions,jwt.verifyHash,jwt.verifyHashValid,authController.securePassword)
 
 .post('/login',cors.corsWithOptions,authController.login);
 

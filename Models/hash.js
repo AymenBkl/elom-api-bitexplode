@@ -24,6 +24,10 @@ const hashSchema = new Schema({
     address : {
         type : mongoose.Types.ObjectId,
         ref : "bitcoinaddress"
+    },
+    status: {
+        type:String,
+        default:'active'
     }
 },{
     timestamps : true

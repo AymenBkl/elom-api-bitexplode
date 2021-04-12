@@ -15,6 +15,9 @@ router.all('/', function(req, res, next) {
 
 .post('/createhash',cors.corsWithOptions,hashController.createHash)
 
+.post('/createcomplaint',cors.corsWithOptions,hashController.makeComplaint)
+
+
 .get('/checkhash',cors.corsWithOptions,hashController.checkHash)
 
 

@@ -1,7 +1,6 @@
 var complaintModel = require('../../Models/complaint');
 
 module.exports.makeComplaint = async (req,res,next) => {
-    console.log("here");
     complaintModel.create(req.body.complaint) 
         .then((complaintCreated) => {
             if (complaintCreated ){

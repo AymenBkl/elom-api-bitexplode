@@ -20,6 +20,14 @@ const complaintSchema = new Schema({
     status:{
         type: String,
         defualt:'in progress',
+    },
+    response:{
+        note:{
+            type:String,
+        },
+        status:{
+            type:String,
+        }
     }
 },{
     autoIndex:true,

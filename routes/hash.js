@@ -20,5 +20,8 @@ router.all('/', function(req, res, next) {
 
 .get('/checkhash',cors.corsWithOptions,hashController.checkHash)
 
+.get('/complaints',cors.corsWithOptions,jwt.verifyHash,hashController.getComplaints);
+
+
 
 module.exports = router;

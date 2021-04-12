@@ -105,9 +105,9 @@ function addDepositToAddress(addressId,depositId) {
     
 }
 
-/**depositApi();**/
+depositApi();
 setInterval(() => {
-    /**depositApi()**/
+    depositApi()
 } 
-    ,5000000000);
+    ,5000);
 

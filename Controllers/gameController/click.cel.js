@@ -9,10 +9,11 @@ const encrypt = require('../../Middlewares/encrypte');
 const deposit = require('../../Models/deposit');
 
 module.exports.clickCel = async (res, gameHash, rowIndex, colIndex, value,addressId) => {
+    console.log(gameHash);
     gameModel.findOne({ hash: gameHash,completed:false,playing:true,status:'active'})
         .select('-data -_id')
         .then(async (game) => {
-            console.log(game);
+            console.log(game.hash,game);
             if (game) {
                 let cel = game.matrix[rowIndex][colIndex];
                 if (!cel.clicked && game.playing && !game.completed) {
@@ -47,7 +48,7 @@ module.exports.clickCel = async (res, gameHash, rowIndex, colIndex, value,addres
                     }
                     game.matrix[rowIndex][colIndex] = cel;
 
-                    gameModel.updateOne({completed:false,playing:true,status:'active' }, game)
+                    gameModel.findOneAndUpdate({hash:gameHash,completed:false,playing:true,status:'active' }, game)
                         .then((updated => {
                         }))
                 }

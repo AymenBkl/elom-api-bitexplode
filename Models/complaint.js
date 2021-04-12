@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const complaintSchema = new Schema({
     hashId : {
         type : mongoose.Types.ObjectId,
-        ref : "complaint"
+        ref : "hash"
     },
     type:{
         type : String,

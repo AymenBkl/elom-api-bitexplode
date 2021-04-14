@@ -12,6 +12,8 @@ router.all('/', function(req, res, next) {
 .options('/',cors.corsWithOptions,jwt.verifyHash,jwt.verifyHashValid,function(req, res, next) {
     next();
 })
+
+.get('/deposits',cors.corsWithOptions,jwt.verifyHash,jwt.verifyHashValid,gameController.getDeposits)
 .post('/creategame',cors.corsWithOptions,jwt.verifyHash,jwt.verifyHashValid,gameController.createGame)
 .post('/clickcel',cors.corsWithOptions,jwt.verifyHash,jwt.verifyHashValid,gameController.clickCel)
 .post('/cashout',cors.corsWithOptions,jwt.verifyHash,jwt.verifyHashValid,gameController.cashOut)

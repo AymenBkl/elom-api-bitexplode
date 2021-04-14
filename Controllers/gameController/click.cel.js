@@ -88,7 +88,7 @@ async function loseGame(game) {
 
 async function winGame(game,addressId) {
     let indexMines = [];
-    let totalWin = 0;
+    let totalWin = game.stake;
     game.completed = true;
     game.playing = false;
     await game.matrix.map((row, indexRow) => {

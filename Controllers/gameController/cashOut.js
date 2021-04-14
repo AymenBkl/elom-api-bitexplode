@@ -13,8 +13,10 @@ module.exports.cashOut = (res, gameHash, addressId) => {
             if (game && game.type == 'bitcoin') {
                 const indexMines = await cashOut(game, addressId);
                 game.status = 'withdraw';
-                gameModel.findOneAndUpdate({completed:false,playing:true,status:'active' }, game,{$new:true})
+                console.log(game)
+                gameModel.findOneAndUpdate({hash:gameHash,completed:false,playing:true,status:'active' }, game,{$new:true})
                         .then(async (game) => {
+                            console.log(game);
                             const decryptedData = await encrypt.decrypted(game.data);
                             res.json({ msg: 'YOU WITHDRAW THE GAME', success: true, status: 200, response: { userClick: game.userClick, indexMines: indexMines, color: 'green', data: game.data, mines: decryptedData } });
                         })
@@ -35,7 +37,7 @@ module.exports.cashOut = (res, gameHash, addressId) => {
 
 async function cashOut(game, addressId) {
     let indexMines = [];
-    let totalWin = 0;
+    let totalWin = game.stake;
     game.completed = true;
     game.playing = false;
     await game.matrix.map((row, indexRow) => {

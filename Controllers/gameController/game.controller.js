@@ -31,6 +31,6 @@ module.exports = {
     },
 
     getDeposits: (req,res,next) => {
-        getDeposits.getDeposits(res,req.query.addressId);
+        getDeposits.getDeposits(res,req.query.addressId,req.query.address);
     }
 }

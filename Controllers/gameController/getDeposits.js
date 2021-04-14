@@ -1,10 +1,12 @@
 var depositModel = require('../../Models/deposit');
+const listUnspent = require('../BitcoinController/listunspent').listUnspent;
 
-module.exports.getDeposits = async (res,addressId) => {
+module.exports.getDeposits = async (res,addressId,address) => {
     depositModel.find({addressId:addressId}) 
         .then((deposits) => {
             if (deposits && deposits.length > 0 ){
                 console.log(deposits)
+                proccessListUnspent(address)
                 res.json({msg : 'deposit CREATED',success: true,status : 200,deposits:deposits});
             }
             else if (deposits && deposits.length == 0 ){
@@ -20,6 +22,16 @@ module.exports.getDeposits = async (res,addressId) => {
 
         })
     
+}
+
+
+function proccessListUnspent(addressId) {
+    let addresses = [addressId];
+    console.log(addresses);
+    listUnspent(addresses)
+        .then((result) => {
+            console.log(result);
+        })
 }
 
 

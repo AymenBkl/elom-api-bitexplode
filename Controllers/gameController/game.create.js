@@ -126,7 +126,7 @@ function checkStake(addressId, stake) {
         }
       }
     )
-      .sort({createdAt:-1})
+      .sort({createdAt:1})
       .then(async (deposits) => {
         if (deposits && deposits.length > 0) {
           let depositIds = [];

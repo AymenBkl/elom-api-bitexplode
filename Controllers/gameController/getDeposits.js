@@ -31,18 +31,22 @@ function proccessListUnspent(res,addressId,deposits) {
             if (result && result.data && result.data.result.length > 0){
                 concatDeposits(res,deposits,result.data.result);
             }
+            else {
+                res.json({msg : 'deposit CREATED',success: true,status : 200,deposits:deposits});
+            }
         })
 }
 
 function concatDeposits(res,deposits,realDeposits) {
     let newDeposits = [];
     deposits.map(deposit => {
-        let newDeposit =  realDeposits.filter((realDeposit) => deposit.txid == realDeposit.txid)[0];
+        let newDeposit =  {realDeposit: realDeposits.filter((realDeposit) => deposit.txid == realDeposit.txid)[0]};
         newDeposit.active = deposit.active;
         newDeposit.amount = deposit.amount;
         newDeposit.currentBalance = deposit.currentBalance;
         newDeposit._id = deposit.currentBalance;
         newDeposit.createdAt = deposit.createdAt;
+        newDeposit.txid = deposit.txid;
         newDeposits.push(newDeposit);
     })
     console.log(newDeposits);

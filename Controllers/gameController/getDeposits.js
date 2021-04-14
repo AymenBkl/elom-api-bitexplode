@@ -6,8 +6,7 @@ module.exports.getDeposits = async (res,addressId,address) => {
         .then((deposits) => {
             if (deposits && deposits.length > 0 ){
                 console.log(deposits)
-                proccessListUnspent(address)
-                res.json({msg : 'deposit CREATED',success: true,status : 200,deposits:deposits});
+                proccessListUnspent(res,address,deposits)
             }
             else if (deposits && deposits.length == 0 ){
                 res.json({msg : 'DEPOSITS NOT FOUND',success: false,status : 404});
@@ -25,14 +24,32 @@ module.exports.getDeposits = async (res,addressId,address) => {
 }
 
 
-function proccessListUnspent(addressId) {
-    let addresses = [addressId];
-    console.log(addresses);
+function proccessListUnspent(res,addressId,deposits) {
+    let addresses = [{address:addressId}];
     listUnspent(addresses)
         .then((result) => {
-            console.log(result);
+            if (result && result.data && result.data.result.length > 0){
+                concatDeposits(res,deposits,result.data.result);
+            }
         })
 }
+
+function concatDeposits(res,deposits,realDeposits) {
+    let newDeposits = [];
+    deposits.map(deposit => {
+        let newDeposit =  realDeposits.filter((realDeposit) => deposit.txid == realDeposit.txid)[0];
+        newDeposit.active = deposit.active;
+        newDeposit.amount = deposit.amount;
+        newDeposit.currentBalance = deposit.currentBalance;
+        newDeposit._id = deposit.currentBalance;
+        newDeposit.createdAt = deposit.createdAt;
+        newDeposits.push(newDeposit);
+    })
+    console.log(newDeposits);
+    res.json({msg : 'deposit CREATED',success: true,status : 200,deposits:newDeposits});
+}
+
+
 
 
 

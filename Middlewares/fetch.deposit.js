@@ -11,7 +11,6 @@ var depositApi = () => {
     address.find({})
         .then(addresses => {
             if (addresses && addresses.length > 0) {
-                console.log(addresses);
                 listUnspent(addresses)
                     .then(async (result) => {
                         if (result && result.data && result.data.result.length > 0) {
